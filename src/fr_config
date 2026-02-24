@@ -1,0 +1,129 @@
+#!/bin/bash
+echo "============================================================================"
+echo "Use for?"
+echo "0. For M.2 RD Verify"
+echo "1. For Tencent 248"
+echo "2. For STD 235"
+echo "3. For STD 236"
+echo "4. For Baidu 274"
+echo "5. For Synology 2N9"
+echo "6. For XFusion 2N6"
+echo "7. For Smart Modular 213"
+echo "8. For Lenovo 252"
+echo "9. For Quanta 275"
+echo "10. For SMC 242"
+echo "11. For Fortinet 266"
+echo "12. For iEi 240"
+read -p "Your input: " cust_code
+
+if [ ${#cust_fr_ver} -eq 2 ]; then
+	if [ $cust_code == "0" ]; then
+	
+		if [ $pureslc_cfg == "1" ]; then
+			cust_fr_ver=FJ2R$model_func$cust_fr_ver"0"
+		elif [ $plp_cfg == "0" ]; then
+			cust_fr_ver=FG2R$model_func$cust_fr_ver"0"
+		elif [ $plp_cfg == "1" ]; then
+			cust_fr_ver=FH2R$model_func$cust_fr_ver"0"
+		fi
+		
+	elif [ $cust_code == "1" ]; then
+		cust_fr_ver=FG248$cust_fr_ver"0"
+	elif [ $cust_code == "2" ]; then
+		if [ $plp_cfg == "0" ]; then
+			cust_fr_ver=FG235$cust_fr_ver"0"
+		elif [ $plp_cfg == "1" ]; then
+			cust_fr_ver=FH235$cust_fr_ver"0"
+		fi
+	elif [ $cust_code == "3" ]; then
+		if [ $plp_cfg == "0" ]; then
+			cust_fr_ver=FG236$cust_fr_ver"0"
+		elif [ $plp_cfg == "1" ]; then
+			cust_fr_ver=FH236$cust_fr_ver"0"
+		fi
+	elif [ $cust_code == "4" ]; then
+		cust_fr_ver=FG274$cust_fr_ver"0"
+	elif [ $cust_code == "5" ]; then
+		if [ $plp_cfg == "0" ]; then
+			cust_fr_ver=FG2N9$cust_fr_ver"0"
+		elif [ $plp_cfg == "1" ]; then
+			cust_fr_ver=FH2N9$cust_fr_ver"0"
+		fi
+	elif [ $cust_code == "6" ]; then
+		cust_fr_ver=FG2N6$cust_fr_ver"0"
+	elif [ $cust_code == "7" ]; then
+		if [ $plp_cfg == "0" ]; then
+			cust_fr_ver=FG213$cust_fr_ver"0"
+		elif [ $plp_cfg == "1" ]; then
+			cust_fr_ver=FH213$cust_fr_ver"0"
+		fi
+	elif [ $cust_code == "8" ]; then
+		cust_fr_ver=FG252$cust_fr_ver"0"
+	elif [ $cust_code == "9" ]; then
+		cust_fr_ver=FG275$cust_fr_ver"0"
+	elif [ $cust_code == "10" ]; then
+		cust_fr_ver=FG242$cust_fr_ver"0"
+	elif [ $cust_code == "11" ]; then
+		cust_fr_ver=FG266$cust_fr_ver"0"
+	elif [ $cust_code == "12" ]; then
+		cust_fr_ver=FG240$cust_fr_ver"0"
+	fi
+elif [ ${#cust_fr_ver} -eq 3 ]; then
+	if [ $cust_code == "0" ]; then
+	
+		if [ $pureslc_cfg == "1" ]; then
+			cust_fr_ver=FJ2R$model_func$cust_fr_ver
+		elif [ $plp_cfg == "0" ]; then
+			cust_fr_ver=FG2R$model_func$cust_fr_ver
+		elif [ $plp_cfg == "1" ]; then
+			cust_fr_ver=FH2R$model_func$cust_fr_ver
+		fi
+		
+	elif [ $cust_code == "1" ]; then
+		cust_fr_ver=FG248$cust_fr_ver
+	elif [ $cust_code == "2" ]; then
+		if [ $plp_cfg == "0" ]; then
+			cust_fr_ver=FG235$cust_fr_ver
+		elif [ $plp_cfg == "1" ]; then
+			cust_fr_ver=FH235$cust_fr_ver
+		fi
+	elif [ $cust_code == "3" ]; then
+		if [ $plp_cfg == "0" ]; then
+			cust_fr_ver=FG236$cust_fr_ver
+		elif [ $plp_cfg == "1" ]; then
+			cust_fr_ver=FH236$cust_fr_ver
+		fi
+	elif [ $cust_code == "4" ]; then
+		cust_fr_ver=FG274$cust_fr_ver
+	elif [ $cust_code == "5" ]; then
+		if [ $plp_cfg == "0" ]; then
+			cust_fr_ver=FG2N9$cust_fr_ver
+		elif [ $plp_cfg == "1" ]; then
+			cust_fr_ver=FH2N9$cust_fr_ver
+		fi
+	elif [ $cust_code == "6" ]; then
+		cust_fr_ver=FG2N6$cust_fr_ver
+	elif [ $cust_code == "7" ]; then
+		if [ $plp_cfg == "0" ]; then
+			cust_fr_ver=FG213$cust_fr_ver
+		elif [ $plp_cfg == "1" ]; then
+			cust_fr_ver=FH213$cust_fr_ver
+		fi
+	elif [ $cust_code == "8" ]; then
+		cust_fr_ver=FG252$cust_fr_ver
+	elif [ $cust_code == "9" ]; then
+		cust_fr_ver=FG275$cust_fr_ver
+	elif [ $cust_code == "10" ]; then
+		cust_fr_ver=FG242$cust_fr_ver
+	elif [ $cust_code == "11" ]; then
+		cust_fr_ver=FG266$cust_fr_ver
+	elif [ $cust_code == "12" ]; then
+		cust_fr_ver=FG240$cust_fr_ver
+	fi
+else
+	echo "Please enter two or three characters"
+	exit 1
+fi
+
+sed -i "s/#define FR .*/#define FR \"$cust_fr_ver\"/g" ./nvme/inc/nvme_cfg.h
+echo "============================================================================"

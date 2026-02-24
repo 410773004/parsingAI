@@ -1,0 +1,100 @@
+#!/bin/bash
+
+# echo "board type ?"
+# echo "1. M.2(0305)"
+# echo "2. EVB"
+# echo "3. FPGA"
+# echo "4. U.2(0504)"
+# echo "5. M.2(2A)"
+# echo "6. U.2(LJ)"
+
+# read board_cfg
+# declare -A ddr_speed
+# if [ $board_cfg == "1" ]; then
+# 	board_cfg="m.2_0305"
+# 	cfg="$cfg -DM2_0305=1"
+# 	ddr_size_list="256 512 1024 2048 4096"
+# 	ddr_speed["ddr4"]="2400"
+# 	ddr_speed["lpddr4"]="2666"
+# elif [ $board_cfg == "2" ]; then
+# 	board_cfg="evb"
+# 	cfg="$cfg -DEVB_0501=1"
+# 	ddr_size_list="4096"
+# 	ddr_speed["ddr4"]="1600"
+# 	ddr_speed["lpddr4"]="1600"
+# elif [ $board_cfg == "3" ]; then
+# 	board_cfg="fpga"
+# 	cfg="$cfg -DFPGA=1"
+# elif [ $board_cfg == "4" ]; then
+# 	board_cfg="u.2_0504"
+# 	cfg="$cfg -DU2_0504=1"
+# 	ddr_size_list="4096 8192"
+# 	ddr_speed["ddr4"]="2400"
+# 	ddr_speed["lpddr4"]="3200"
+# elif [ $board_cfg == "5" ]; then
+# 	board_cfg="m.2_2a"
+# 	cfg="$cfg -DM2_2A=1"
+# 	ddr_size_list="256 512 1024 2048 4096"
+# 	ddr_speed["ddr4"]="2400"
+# 	ddr_speed["lpddr4"]="3200"
+# elif [ $board_cfg == "6" ]; then
+# 	board_cfg="u.2_lj"
+# 	cfg="$cfg -DU2_LJ=1"
+# 	ddr_size_list="4096 8192"
+# 	ddr_speed["ddr4"]="2400"
+# fi
+echo "================================================"
+echo -e "\"board_config\" start"
+board_cfg="u.2_lj"
+cfg="$cfg -DU2_LJ=1"
+ddr_size_list="4096 8192"
+ddr_speed["ddr4"]="2400"
+echo "board_cfg: $board_cfg"
+echo "cfg: $cfg"
+echo "ddr_size_list: $ddr_size_list"
+echo "ddr_speed: $ddr_speed"
+echo "================================================"
+echo "================================================"
+
+echo "pure slc support"
+echo "0. No"
+echo "1. Yes"
+read pureslc_cfg
+
+if [ $pureslc_cfg == "0" ]; then
+	cfg="$cfg -DPURE_SLC=0"
+	echo "cfg: $cfg"
+elif [ $pureslc_cfg == "1" ]; then
+	cfg="$cfg -DPURE_SLC=1"
+	echo "cfg: $cfg"
+fi
+
+echo "================================================"
+echo "plp support"
+echo "0. Yes"
+echo "1. No"
+if [ $pureslc_cfg == "0" ]; then
+	read plp_cfg
+elif [ $pureslc_cfg == "1" ]; then
+	plp_cfg="0"
+fi
+
+if [ $plp_cfg == "0" ]; then
+	cfg="$cfg -DPLP_SUPPORT=1"
+	echo "cfg: $cfg"
+	model_func="D"
+	board_fea="plp"
+elif [ $plp_cfg == "1" ]; then
+	cfg="$cfg -DPLP_SUPPORT=0"
+	echo "cfg: $cfg"
+	model_func="D"
+fi
+
+if [ $pureslc_cfg == "1" ]; then
+	board_fea="plp+pslc"
+fi
+
+echo "================================================"
+echo "board_fea: $board_fea"
+echo "model_func: $model_func"
+echo "================================================"

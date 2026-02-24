@@ -1,0 +1,31 @@
+#------------------------------------------------------------------------------
+#                 Copyright(c) 2016-2019 Innogrit Corporation
+#                             All Rights reserved.
+#
+#  The confidential and proprietary information contained in this file may
+#  only be used by a person authorized under and to the extent permitted
+#  by a subsisting licensing agreement from Innogrit Corporation.
+#  Dissemination of this information or reproduction of this material
+#  is strictly forbidden unless prior written permission is obtained
+#  from Innogrit Corporation.
+#------------------------------------------------------------------------------
+https://innogrit.sharepoint.com/Shared%20Documents/Forms/AllItems.aspx?csf=1&e=RuDNdC&RootFolder=%2fShared%20Documents%2fEngineering%2fTacoma%5fG4%2fAppNote%2fNCB%2fCMF%2f2%2e13%2e2019%5fSVN9135%5fTacoma%5fT0&FolderCTID=0x012000F24789E8A6A913488CA8D10E7B304B74
+
+Code		Total		  Parity	  Date	  	Rate	    Max  	Min		Number 			QSCALE_		Usage Note 
+			Length		  Length	 Length					Row		Row     of				SEL_THR
+		  (16Bytes)	     (16Bytes)	(16Bytes)				Weight	Weight  Circulants  
+================================================================================================================================================================
+2KB:
+Code 31	     144           14	      130	    0.9028	     73		 48		734				142			Toshiba 3D TLC/QLC sector 512B (fitted to page w/ 32B meta and 4B CRC)
+Code 32	     144	       12	      132	    0.9167	     73		 48		730				142			Toshiba 3D TLC/QLC sector 520B (fitted to page w/ 32B meta and 4B CRC)
+4KB:
+Code 61 	 287           28	      259	    0.9024	     60		 48		1471			283			Toshiba 3D TLC/QLC sector 512B (fitted to page w/ 32B meta and 4B CRC)
+Code 62 	 287	       24	      263	    0.9163	     75		 58		1471			283			Toshiba 3D TLC/QLC sector 520B (fitted to page w/ 32B meta and 4B CRC)
+Code 63          291           32             259           0.8900                                                                                      Micron 3D sector 512B meta 32B
+Code 64          291           28             263           0.9083                                                                                      Micron 3D sector 520B meta 32B
+Code 65          299           38             261           0.8662                                                                                      Toshiba QLC sector 512B meta 32B
+Code 66          299           34             265           0.8700                                                                                      Toshiba QLC sector 520B meta 32B
+
+PS1: u_dec_cmf_cfg.r_mcmf_high_col_start_idx is set as shown in the "QSCALE_SEL_THR" column.
+PS2: i_pdec_cmf_size is set as shown in the "Number of Circulants" column.
+PS3: u_dec_cmf_cfg.r_mcmf_proc_col_num is set to 5 for all the codes.

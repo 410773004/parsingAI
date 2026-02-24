@@ -1,0 +1,25 @@
+#!/bin/bash
+
+opt=""
+configbin="./scripts/fwconfig.bin"
+while getopts "h?o:c:" args; do
+	case "$args" in
+	h|\?)
+		echo "-o ... : build option, tsb/mu for nand type, can use + to use more option, ex: tsb+pi8"
+		echo "-c ... : specific fwconfig"
+		echo "support nand type: tsb mu b27b unic ymtc hynx sndk ss"
+		echo "for QLC: specific qlc feature"
+		exit 0
+		;;
+	n)  cnt=$OPTARG
+		;;
+	s)  s=$OPTARG
+		;;
+	e)  e=$OPTARG
+		;;
+	o)  opt=$OPTARG
+		;;
+	c)  configbin=$OPTARG
+		;;
+    esac
+done

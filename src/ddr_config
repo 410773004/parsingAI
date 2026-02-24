@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# echo "DDR type ?"
+# echo "0. DDR4"
+# echo "1. DDR4 512M"
+# echo "2. DDR4 1G"
+# echo "3. DDR4 2G"
+# echo "4. DDR4 4G"
+# echo "5. DDR4 8G"
+# echo "6. LPDDR4"
+# echo "7. LPDDR4 512M"
+# echo "8. LPDDR4 1G"
+# echo "9. LPDDR4 2G"
+# echo "10. DDR3(Not Ready)"
+# echo "11. LPDDR3(Not Ready)"
+
+# read ddr_type
+# if [ $ddr_type == "0" ]; then
+# 	fw="$fw+ddr4"
+# elif [ $ddr_type == "1" ]; then
+# 	fw="$fw+ddr4+512m"
+# elif [ $ddr_type == "2" ]; then
+# 	fw="$fw+ddr4+1g"
+# elif [ $ddr_type == "3" ]; then
+# 	fw="$fw+ddr4+2g"
+# elif [ $ddr_type == "4" ]; then
+# 	fw="$fw+ddr4+4g"
+# elif [ $ddr_type == "5" ]; then
+# 	fw="$fw+ddr4+8g"
+# elif [ $ddr_type == "6" ]; then
+# 	fw="$fw+lpddr4"
+# elif [ $ddr_type == "7" ]; then
+# 	fw="$fw+lpddr4+512m"
+# elif [ $ddr_type == "8" ]; then
+# 	fw="$fw+lpddr4+1g"
+# elif [ $ddr_type == "9" ]; then
+# 	fw="$fw+lpddr4+2g"
+# elif [ $ddr_type == "10" ]; then
+# 	fw="$fw+ddr3"
+# elif [ $ddr_type == "11" ]; then
+# 	fw="$fw+lpddr3"
+# fi
+
+echo "DDR type ?"
+echo "0. DDR4 4G"
+echo "1. DDR4 8G"
+
+read ddr_type
+if [ $ddr_type == "0" ]; then
+	fw="$fw+ddr4+4g"	
+elif [ $ddr_type == "1" ]; then
+	fw="$fw+ddr4+8g"	
+fi

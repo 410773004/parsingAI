@@ -1,0 +1,210 @@
+#------------------------------------------------------------------------------
+#                 Copyright(c) 2016-2019 Innogrit Corporation
+#                             All Rights reserved.
+#
+#  The confidential and proprietary information contained in this file may
+#  only be used by a person authorized under and to the extent permitted
+#  by a subsisting licensing agreement from Innogrit Corporation.
+#  Dissemination of this information or reproduction of this material
+#  is strictly forbidden unless prior written permission is obtained
+#  from Innogrit Corporation.
+#------------------------------------------------------------------------------
+cmake_minimum_required(VERSION 2.8)
+
+if (PERF_BUILD)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DPERF_BUILD)
+endif()
+
+if (ATOMIC)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DATOMIC)
+endif()
+
+if (NS_MANAGE)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DNS_MANAGE=1)
+endif()
+
+if (PI_SUPPORT)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DPI_SUPPORT)
+endif()
+
+if (MDOT2_SUPPORT)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DMDOT2_SUPPORT)
+endif()
+
+if (HMETA_SIZE)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DHMETA_SIZE=${HMETA_SIZE})
+endif()
+
+if (USE_8K_DU)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DUSE_8K_DU)
+endif()
+
+if (BTN_STREAM_BUF_ONLY)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DBTN_STREAM_BUF_ONLY)
+endif()
+
+if (DISABLE_HS_CRC_SUPPORT)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DDISABLE_HS_CRC_SUPPORT)
+endif()
+
+if (USE_512B_HOST_SECTOR_SIZE)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DUSE_512B_HOST_SECTOR_SIZE=1)
+endif()
+
+if (HMB_SUPPORT)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DHMB_SUPPORT=1)
+	if (HMB_DTAG)
+		set(PP_DEFINITIONS ${PP_DEFINITIONS} -DHMB_DTAG=1)
+	endif()
+endif()
+
+if (DDR)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DDDR=1)
+endif()
+
+if (ENABLE_SRAM_ECC)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DENABLE_SRAM_ECC)
+endif()
+
+if (USE_CRYPTO_HW)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DUSE_CRYPTO_HW=1)
+endif()
+
+if (DISABLE_SECURITY)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DDISABLE_SECURITY=1)
+endif()
+
+if (USE_SM4_ALGO)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DUSE_SM4_ALGO=1)
+endif()
+
+if (FORCE_IO_SRAM)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DFORCE_IO_SRAM=1)
+endif()
+
+if (SRIOV_SUPPORT)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DSRIOV_SUPPORT)
+endif()
+
+if (RAID_SUPPORT)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DRAID_SUPPORT=1)
+endif()
+
+if (XOR_CMPL_BY_PDONE)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DXOR_CMPL_BY_PDONE=1)
+endif()
+
+if (RDISK_WRITE_UNC_SUPPORT)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DRDISK_WRITE_UNC_SUPPORT=1)
+endif()
+
+if (DUAL_BE)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DDUAL_BE=1)
+endif()
+
+if (SEMI_WRITE_ENABLE)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DSEMI_WRITE_ENABLE=1)
+endif()
+
+if (FORCE_IO_DDR)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DFORCE_IO_DDR=1)
+endif()
+
+if (ENABLE_PARALLEL_ECC)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DENABLE_PARALLEL_ECC=1)
+endif()
+
+if (ENABLE_INLINE_ECC)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DENABLE_INLINE_ECC=1)
+endif()
+
+if (ENABLE_L2CACHE)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DENABLE_L2CACHE=1)
+endif()
+
+if (ENABLE_VPD)
+    set(PP_DEFINITIONS ${PP_DEFINITIONS} -DENABLE_VPD=1)
+endif()
+
+if (MERGE_WA)
+    set(PP_DEFINITIONS ${PP_DEFINITIONS} -DMERGE_WA=1)
+endif()
+
+if (FREE_DTAG_PRELOAD)
+    set(PP_DEFINITIONS ${PP_DEFINITIONS} -DFREE_DTAG_PRELOAD=1)
+endif()
+
+if (M2_0305)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DM2=1)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DM2_0305=1)
+endif()
+
+if (M2_2A)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DM2=1)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DM2_2A=1)
+endif()
+
+if (U2_0504)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DU2=1)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DU2_0504=1)
+endif()
+
+if (U2_LJ)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DU2=1)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DU2_LJ=1)
+endif()
+
+
+if (EVB_0501)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DEVB_0501=1)
+endif()
+
+if (DDR4)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DDDR4=1)
+endif()
+
+if (LPDDR4)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DLPDDR4=1)
+endif()
+
+if (PURE_XLC)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DPURE_XLC=1)
+endif()
+
+if (DDR_HALF)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DDDR_HALF)
+endif()
+
+if (CUST_FR)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DCUST_FR=${CUST_FR})
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DCUST_FR_VER=${CUST_FR_VER})
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DCUST_CODE=${CUST_CODE})
+endif()
+
+if (PLP_SUPPORT)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DPLP_SUPPORT=1)
+endif()
+
+if (PURE_SLC)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DPURE_SLC=1)
+endif()
+
+if (SAVE_CDUMP)
+    set(PP_DEFINITIONS ${PP_DEFINITIONS} -DSAVE_CDUMP=1)
+endif()
+
+if (NVME_TELEMETRY_LOG_PAGE_SUPPORT)
+    set(PP_DEFINITIONS ${PP_DEFINITIONS} -DNVME_TELEMETRY_LOG_PAGE_SUPPORT=1)
+endif()
+
+#if (TCG_SUPPORT)
+#    set(PP_DEFINITIONS ${PP_DEFINITIONS} -DTCG_SUPPORT=1)
+#endif()
+set(PP_DEFINITIONS ${PP_DEFINITIONS} -D_TCG_=${TCG_SUPPORT})
+if (TCG_SUPPORT)
+#	set(PP_DEFINITIONS ${PP_DEFINITIONS} -D_TCG_=${TCG_SUPPORT})
+#	if (CPU_ID EQUAL 4)
+		set(PP_DEFINITIONS ${PP_DEFINITIONS} -DTCG_NAND_BACKUP=1)
+#	endif()
+#	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DFW_UPDT_TCG_SWITCH)
+endif()

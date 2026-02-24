@@ -1,0 +1,305 @@
+#------------------------------------------------------------------------------
+#                 Copyright(c) 2016-2019 Innogrit Corporation
+#                             All Rights reserved.
+#
+#  The confidential and proprietary information contained in this file may
+#  only be used by a person authorized under and to the extent permitted
+#  by a subsisting licensing agreement from Innogrit Corporation.
+#  Dissemination of this information or reproduction of this material
+#  is strictly forbidden unless prior written permission is obtained
+#  from Innogrit Corporation.
+#------------------------------------------------------------------------------
+
+cmake_minimum_required(VERSION 2.8)
+if (Lenovo_case)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DLenovo_case)
+endif()
+if (Smart_Modular_case)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DSmart_Modular_case)
+endif()
+if (_WUNC_)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -D_WUNC_)
+endif()
+if (Xfusion_case)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DXfusion_case)
+endif()
+if (iEi_case)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DiEi_case)
+endif()
+if (RD_VERIFY)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DRD_VERIFY)
+endif()
+if (Add_smart)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DAdd_smart)
+endif()
+if (Tencent_case)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DTencent_case)
+endif()
+if (Synology_case)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DSynology_case)
+endif()
+if (Baidu_case)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DBaidu_case)
+endif()
+if (DST)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DDST)
+endif()
+if (SEC_4K)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DSEC_4K)
+endif()
+if (OC_SSD)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DOC_SSD=1)
+endif()
+
+if (HAVE_VELOCE)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DHAVE_VELOCE)
+endif()
+
+if (FPGA)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DFPGA)
+endif()
+
+if (HAVE_T0)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DHAVE_T0)
+elseif (HAVE_A0)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DHAVE_A0)
+endif()
+
+if (RAID_SUPPORT)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DRAID_SUPPORT)
+endif()
+
+if (RAMDISK)
+	message(FATAL_ERROR "Don't support RAMDISK")
+endif()
+
+if (RDISK)
+	if (CPU_ID EQUAL 1)
+		set(DISPATCHER "true")
+		set(SPIID "true")
+	endif()
+
+	if (CPU_ID EQUAL 4)
+		set(DISPATCHER "true")
+		set(RDISK_BE "true")
+	endif()
+
+	if (SCHEDULER)
+		set(PP_DEFINITIONS ${PP_DEFINITIONS} -DSCHEDULER=${SCHEDULER})
+	endif()
+    if (WA_6654)
+        set(PP_DEFINITIONS ${PP_DEFINITIONS} -DWA_6654=1)
+    endif()
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DRDISK)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DCPU_DTAG=4)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DCPU_FE=1)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DCPU_BE=2)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DCPU_FTL=3)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DCPU_BE_LITE=4)
+endif()
+
+if (RAWDISK)
+	set(DISPATCHER "true")
+	if (NCB EQUAL 1)
+		set(SRB "true")
+		set(RAWDISK_BE "true")
+	elseif (NCB EQUAL 2)
+		set(RAWDISK_BE "true")
+	else() # FE
+		set(RAWDISK_FE "true")
+	endif()
+	if (NCB)
+		set(PP_DEFINITIONS ${PP_DEFINITIONS} -DNCB=${NCB})
+	endif()
+
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DRAWDISK)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DCPU_DTAG=2)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DCPU_FE=1)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DCPU_BE=2)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DCPU_BE2=3)
+endif()
+
+if (PROGRAMMER)
+	#set(PP_DEFINITIONS ${PP_DEFINITIONS} -DPROGRAMMER)
+	message(FATAL_ERROR "Don't support VDISK")
+endif()
+
+if (ENABLE_SOUT)
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DENABLE_SOUT)
+endif()
+
+if (CPU_ID)
+	math(EXPR CPU_ID_0 "${CPU_ID} - 1")
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DCPU_ID=${CPU_ID} -DCPU_ID_0=${CPU_ID_0})
+	if (${CPU_ID} LESS 1 OR ${CPU_ID} GREATER 4)
+		message(FATAL_ERROR "CPU ID is out of range from 1 to 4, exit.")
+	endif()
+else()
+	set(PP_DEFINITIONS ${PP_DEFINITIONS} -DCPU_ID=1 -DCPU_ID_0=0)
+endif()
+
+set(PP_DEFINITIONS ${PP_DEFINITIONS} -DMPC=${MPC})
+
+if (TFW_TEST)
+	message(FATAL_ERROR "Don't support TFW")
+endif()
+
+set(RAINIER_PLATFORM "true")
+
+#set(PP_DEFINITIONS ${PP_DEFINITIONS} -D_TCG_=${TCG_SUPPORT})
+#if (TCG_SUPPORT)
+#	set(PP_DEFINITIONS ${PP_DEFINITIONS} -D_TCG_=${TCG_SUPPORT})
+#	if (CPU_ID EQUAL 4)
+#		set(PP_DEFINITIONS ${PP_DEFINITIONS} -DTCG_NAND_BACKUP=1)
+#	endif()
+#endif()
+
+add_definitions(${PP_DEFINITIONS})
+
+set(TARGET_OBJS main.c version.c)
+add_subdirectory(${SRC_ROOT}/rtos/)
+set(LIB_OBJS ${LIB_OBJS} librtos)
+set(TARGET_OBJS ${TARGET_OBJS} $<TARGET_OBJECTS:rtos>)
+
+add_subdirectory(${SRC_ROOT}/utils/)
+if (DDR_TEST)
+	add_subdirectory(${SRC_ROOT}/utils/dfi)
+	set(TARGET_OBJS ${TARGET_OBJS} $<TARGET_OBJECTS:libdfi>)
+endif()
+if (BTN_MOD)
+	add_subdirectory(${SRC_ROOT}/btn/)
+	set(LIB_OBJS ${LIB_OBJS} libbtn)
+	set(TARGET_OBJS ${TARGET_OBJS} $<TARGET_OBJECTS:btn>)
+endif()
+
+if(BE_MOD)
+	add_subdirectory(${SRC_ROOT}/btn/l2p)
+	set(LIB_OBJS ${LIB_OBJS} libl2p)
+elseif(FTL_MOD)
+	add_subdirectory(${SRC_ROOT}/btn/l2p)
+	set(LIB_OBJS ${LIB_OBJS} libl2p)
+endif()
+
+add_subdirectory(${SRC_ROOT}/btn/dtag)
+set(LIB_OBJS ${LIB_OBJS} libdtag)
+
+add_subdirectory(${SRC_ROOT}/btn/dpe)
+set(TARGET_OBJS ${TARGET_OBJS} $<TARGET_OBJECTS:dpe>)
+
+if (DISPATCHER)
+	add_subdirectory(${SRC_ROOT}/dispatcher/)
+	set(TARGET_OBJS ${TARGET_OBJS} $<TARGET_OBJECTS:disp>)
+endif()
+
+if (SCHEDULER)
+	add_subdirectory(${SRC_ROOT}/scheduler/)
+	set(LIB_OBJS ${LIB_OBJS} libschl)
+	set(TARGET_OBJS ${TARGET_OBJS} $<TARGET_OBJECTS:schl>)
+	add_subdirectory(${SRC_ROOT}/srb/)
+	set(LIB_OBJS ${LIB_OBJS} libsrb)
+
+	if (SCHEDULER EQUAL 1)
+		add_subdirectory(${SRC_ROOT}/fcore/)
+		set(TARGET_OBJS ${TARGET_OBJS} $<TARGET_OBJECTS:fcore>)
+		set(LIB_OBJS ${LIB_OBJS} libfcore)
+	endif()
+elseif (SRB)
+	add_subdirectory(${SRC_ROOT}/srb/)
+	set(LIB_OBJS ${LIB_OBJS} libsrb)
+endif()
+
+if (FTL_MOD)
+	add_subdirectory(${SRC_ROOT}/ftl/)
+	set(TARGET_OBJS ${TARGET_OBJS} $<TARGET_OBJECTS:ftl>)
+	set(LIB_OBJS ${LIB_OBJS} libftl)
+endif()
+
+if (FE_MOD)
+	add_subdirectory(${SRC_ROOT}/${FE_MOD}/)
+	set(TARGET_OBJS ${TARGET_OBJS} $<TARGET_OBJECTS:fe>)
+	set(LIB_OBJS ${LIB_OBJS} libfe)
+endif()
+
+if (BE_MOD)
+	if (STATIC_NCL)
+		message("use static NCL library")
+	else()
+		if (USE_OLD_NCL)
+			add_subdirectory(${SRC_ROOT}/ncl/)
+		else()
+			add_subdirectory(${SRC_ROOT}/ncl_20/)
+			set(TARGET_OBJS ${TARGET_OBJS} $<TARGET_OBJECTS:be>)
+		endif()
+		set(LIB_OBJS ${LIB_OBJS} libbe)
+	endif()
+endif()
+
+if (TCG_SUPPORT)
+	if (CPU_ID EQUAL 1)
+		add_subdirectory(${SRC_ROOT}/tcg/)
+		set(TARGET_OBJS ${TARGET_OBJS} $<TARGET_OBJECTS:tcg>)
+		set(LIB_OBJS ${LIB_OBJS} libtcg)
+	endif()
+	if (CPU_ID EQUAL 4)
+		add_subdirectory(${SRC_ROOT}/tcg/)
+		set(TARGET_OBJS ${TARGET_OBJS} $<TARGET_OBJECTS:tcgnf>)
+		set(LIB_OBJS ${LIB_OBJS} libtcgnf)
+	endif()
+endif()
+
+if (PROGRAMMER)
+	add_subdirectory(${SRC_ROOT}/srb/)
+	set(LIB_OBJS ${LIB_OBJS} libsrb)
+endif()
+
+set(LIB_OBJS ${LIB_OBJS} libutils)
+
+include_directories(${COMMON_INC})
+if (SPIID)
+    add_subdirectory(${SRC_ROOT}/spi/)
+    set(LIB_OBJS ${LIB_OBJS} libspi)
+endif()
+# message(${TARGET_OBJS})
+# message(${LIB_OBJS})
+
+set(image "main${CPU_ID}")
+
+add_executable(${image} ${TARGET_OBJS})
+
+if (STATIC_NCL)
+	if (USE_MU_NAND)
+		target_link_libraries(${image} ${SRC_ROOT}/ncl/liblibbe_mu.a)
+	endif()
+	if (USE_TSB_NAND)
+		target_link_libraries(${image} ${SRC_ROOT}/ncl/liblibbe_tsb.a)
+	endif()
+endif()
+
+if (BE_MOD)
+	target_link_libraries(${image} ${SRC_ROOT}/ncl_20/debug/tsb_disread.obj)
+endif()
+
+target_link_libraries(${image} ${SRC_ROOT}/lib/liblib.a)
+if (CPU_ID EQUAL 1)
+	target_link_libraries(${image} -Wl,--start-group ${LIB_OBJS} -lgcc -Wl,--end-group -Wl,-Map -Wl,output.map -Wl,--cref)
+else()
+	target_link_libraries(${image} -Wl,--start-group ${LIB_OBJS} -lgcc -Wl,--end-group -Wl,-Map -Wl,output.map -Wl,--cref -Wl,--just-symbols=shared_mem.syms)
+endif()
+
+add_dependencies(${image} top_revision.h)
+
+add_dependencies(${LIB_OBJS} trace-eventid.h)
+add_dependencies(libutils trace-eventid.h)
+
+if(COMMAND add_pc_lint)
+	add_pc_lint(main ${TARGET_OBJS})
+endif(COMMAND add_pc_lint)
+
+if (CPU_ID EQUAL 1)
+	add_custom_command(
+		TARGET ${image}
+		POST_BUILD
+		COMMAND ${CMAKE_OBJCOPY} --only-section=.share_btcm* ${image} shared_mem.syms
+		COMMENT "Creating Shared MEM symbols"
+	)
+endif()

@@ -1,0 +1,649 @@
+
+CPU4: 0x00000137 ncl_20/read_retry.c +2250 System_Blk_read_retry() - pda: 0xc8, retry fail, err : 7
+CPU4: 0x00000138 ncl_20/ncl_cmd.c +4495 ncl_cmd_read_retry() - ncl_cmd_read_retry, retry_cnt: 1, valu
+e: 0x0, pda:0xc8, re_step:7
+CPU4: 0x00000139 ncl_20/read_retry.c +2250 System_Blk_read_retry() - pda: 0xc8, retry fail, err : 7
+CPU4: 0x0000013A ncl_20/epm.c +937 scan_the_latest_epm_ramap() - load epm remap empty sts=7
+CPU4: 0x0000013B ncl_20/ncl_cmd.c +4495 ncl_cmd_read_retry() - ncl_cmd_read_retry, retry_cnt: 0, valu
+e: 0x0, pda:0xc8, re_step:5
+CPU4: 0x0000013C ncl_20/read_retry.c +2250 System_Blk_read_retry() - pda: 0xc8, retry fail, err : 7
+CPU4: 0x0000013D ncl_20/ncl_cmd.c +4495 ncl_cmd_read_retry() - ncl_cmd_read_retry, retry_cnt: 1, valu
+e: 0x0, pda:0xc8, re_step:7
+CPU4: 0x0000013E ncl_20/read_retry.c +2250 System_Blk_read_retry() - pda: 0xc8, retry fail, err : 7
+CPU4: 0x0000013F ncl_20/epm.c +992 scan_the_latest_epm_ramap() - find empty pda
+CPU4: 0x00000140 timestamp of cpu4: 0x000000000000(1970-01-01 08:00:00)       
+CPU4: 0x00000141 ncl_20/ncl_cmd.c +4495 ncl_cmd_read_retry() - ncl_cmd_read_retry, retry_cnt: 0, valu
+e: 0x0, pda:0xcc, re_step:5
+CPU4: 0x00000142 ncl_20/read_retry.c +2250 System_Blk_read_retry() - pda: 0xcc, retry fail, err : 7
+CPU4: 0x00000143 ncl_20/ncl_cmd.c +4495 ncl_cmd_read_retry() - ncl_cmd_read_retry, retry_cnt: 1, valu
+e: 0x0, pda:0xcc, re_step:7
+CPU4: 0x00000144 ncl_20/read_retry.c +2250 System_Blk_read_retry() - pda: 0xcc, retry fail, err : 7
+CPU4: 0x00000145 ncl_20/epm.c +937 scan_the_latest_epm_ramap() - load epm remap empty sts=7
+CPU4: 0x00000146 ncl_20/ncl_cmd.c +4495 ncl_cmd_read_retry() - ncl_cmd_read_retry, retry_cnt: 0, valu
+e: 0x0, pda:0xcc, re_step:5
+CPU4: 0x00000147 ncl_20/read_retry.c +2250 System_Blk_read_retry() - pda: 0xcc, retry fail, err : 7
+CPU4: 0x00000148 ncl_20/ncl_cmd.c +4495 ncl_cmd_read_retry() - ncl_cmd_read_retry, retry_cnt: 1, valu
+e: 0x0, pda:0xcc, re_step:7
+CPU4: 0x00000149 ncl_20/read_retry.c +2250 System_Blk_read_retry() - pda: 0xcc, retry fail, err : 7
+
+
+
+CPU4: 0x0000014A ncl_20/epm.c +992 scan_the_latest_epm_ramap() - find empty pda
+CPU3: 0x000003B4 ftl/ftl_spor.c +1335 ftl_need_p2l_rebuild() - EPM VAC read fail, swith to FTL_QBT/PB
+T_BUILD_L2P mode
+CPU1: 0x000003B5 dispatcher/plp.c +685 plp_one_time_init() - plp_one_time_init gpio value:1\n
+CPU3: 0x000003B6 ftl/ftl_spor.c +3996 ftl_check_glist_last_blk() - glist inc cnt : 0x0
+CPU1: 0x000003B7 dispatcher/plp.c +343 plp_cap_trigger() - enter trigger
+CPU3: 0x000003B8 ftl/ftl_spor.c +10591 ftl_restore_vac_from_epm() - [IN] ftl_restore_vac_from_epm
+CPU3: 0x000003B9 ftl/ftl_spor.c +10596 ftl_restore_vac_from_epm() - EPM FTL data incorrect, VAC abort
+
+CPU3: 0x000003BB ftl/ftl_spor.c +9399 ftl_p2l_build_table() - [IN] ftl_p2l_build_table
+CPU3: 0x000003BC ftl/ftl_spor.c +9196 ftl_print_spor_list_info() - SPOR USR
+CPU3: 0x000003BD ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:769 SN:0xb465 B_T:1 pbt_s:
+5763
+CPU3: 0x000003BE ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:202 SN:0xb466 B_T:1 pbt_s:
+6530
+CPU3: 0x000003BF ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:248 SN:0xb467 B_T:1 pbt_s:
+7297
+CPU3: 0x000003C0 timestamp of cpu3: 0x000000000000(1970-01-01 08:00:00)       
+CPU3: 0x000003C1 ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:178 SN:0xb468 B_T:1 pbt_s:
+8064
+CPU3: 0x000003C2 ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:206 SN:0xb469 B_T:1 pbt_s:
+8832
+CPU3: 0x000003C3 ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:292 SN:0xb46a B_T:1 pbt_s:
+9603
+CPU3: 0x000003C4 ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:253 SN:0xb46c B_T:1 pbt_s:
+578
+CPU3: 0x000003C5 ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:126 SN:0xb46d B_T:1 pbt_s:
+1155
+CPU3: 0x000003C6 ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:467 SN:0xb46e B_T:1 pbt_s:
+1922
+CPU3: 0x000003C7 ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:757 SN:0xb46f B_T:1 pbt_s:
+2690
+CPU3: 0x000003C8 ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:344 SN:0xb470 B_T:1 pbt_s:
+3457
+CPU3: 0x000003C9 ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:385 SN:0xb471 B_T:1 pbt_s:
+4224
+CPU3: 0x000003CA ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:449 SN:0xb472 B_T:1 pbt_s:
+4995
+CPU3: 0x000003CB ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:395 SN:0xb473 B_T:1 pbt_s:
+5763
+CPU3: 0x000003CC ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:432 SN:0xb474 B_T:1 pbt_s:
+6530
+CPU3: 0x000003CD ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:412 SN:0xb475 B_T:1 pbt_s:
+7297
+CPU3: 0x000003CE ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:439 SN:0xb476 B_T:1 pbt_s:
+8064
+CPU3: 0x000003CF ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:225 SN:0xb477 B_T:1 pbt_s:
+8832
+CPU3: 0x000003D0 ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:494 SN:0xb478 B_T:1 pbt_s:
+9603
+CPU3: 0x000003D1 ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:293 SN:0xb47a B_T:1 pbt_s:
+578
+CPU3: 0x000003D2 ftl/ftl_spor.c +9207 ftl_print_spor_list_info() - USR Blk:418 SN:0xb47b B_T:6 pbt_s:
+1345
+CPU3: 0x000003D3 ftl/ftl_spor.c +9214 ftl_print_spor_list_info() - SPOR GC
+CPU3: 0x000003D4 ftl/ftl_spor.c +9225 ftl_print_spor_list_info() - GC Blk:46 SN:0xb367 B_T:7 pbt_s:21
+12
+CPU3: 0x000003D5 ftl/ftl_spor.c +9237 ftl_adjust_pbt_build_sn() - no open pbt use!!
+CPU3: 0x000003D6 ftl/ftl_spor.c +9237 ftl_adjust_pbt_build_sn() - no open pbt use!!
+CPU3: 0x000003D7 ftl/ftl_spor.c +9450 ftl_p2l_build_table() - pre_g_sn 0xb367 < last_rec_b_sn 0xb44d
+CPU3: 0x000003D8 ftl/ftl_spor.c +9462 ftl_p2l_build_table() - PBT first chk usr:292 gc:65535 scan_sn:
+0xb46b
+CPU3: 0x000003D9 ftl/ftl_spor.c +9487 ftl_p2l_build_table() - USR Blk : 292, SN : 0xb46a
+CPU1: 0x000003DA dispatcher/rdisk.c +5857 rdisk_fe_info_restore() - fe sig 80808080 5200320, ver -213
+9062144 1
+CPU1: 0x000003DB nvme/apl/decoder/core.c +779 nvmet_restore_feat() - saved feat used
+CPU1: 0x000003DC rtos/armv7r/thermal.c +1092 ts_tmt_setup() - tmt setup: tmt1 70 tmt2 80
+CPU3: 0x000003DD btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU1: 0x000003DE nvme/apl/decoder/core.c +790 nvmet_restore_feat() - PLP Disable
+CPU1: 0x000003DF flag 0x0 fe:0x80030000 IOQ_flag 0       
+CPU1: 0x000003E0 nvme/apl/decoder/smart.c +623 nvmet_restore_smart_stat() - poh[233] pom_per_ms[13800
+]
+CPU1: 0x000003E1 nvme/apl/decoder/smart.c +680 nvmet_restore_smart_stat() - [DBG] (shr min/tx min)[0/
+0]
+CPU4: 0x000003E2 ncl_20/epm.c +2621 epm_update() - epm_update epm_sign[7] cpu_id[3]
+CPU1: 0x000003E3 nvme/apl/decoder/smart.c +683 nvmet_restore_smart_stat() - [DBG] Rd(TotDet)[0] Hst(D
+et/Unc)[0/0] Int(Det/Unc)[0/0]
+CPU1: 0x000003E4 nvme/apl/decoder/smart.c +686 nvmet_restore_smart_stat() - [DBG] (Pg/Er)[0/0]
+CPU1: 0x000003E5 dispatcher/rdisk.c +5867 rdisk_fe_info_restore() - def ftl stat 2
+CPU4: 0x000003E6 ncl_20/epm.c +2688 epm_update() - epm_data_update done
+CPU4: 0x000003E7 ncl_20/epm.c +1838 epm_header_update() - epm_header_update
+CPU4: 0x000003E8 ncl_20/epm.c +1873 epm_header_update() - epm_header_update done
+CPU1: 0x000003E9 dispatcher/rdisk.c +4520 rdisk_fe_info_flush_done() - fe info flushed 0(4)
+CPU1: 0x000003EA dispatcher/rdisk.c +6077 <global>() - old drive fe ns\n
+CPU1: 0x000003EB dispatcher/rdisk.c +6078 <global>() - sizeof(nvme_ns_attr_t):232\n
+CPU1: 0x000003EC nvme/apl/decoder/core.c +1496 nvmet_set_drive_capacity() - Drive Capacity: 937703088
+ (LBACNT)
+CPU1: 0x000003ED nvme/apl/decoder/core.c +1516 nvmet_set_drive_capacity() - Drive Capacity: 37e436b0 
+(LBACNT)  host_sec_bitz:9
+CPU1: 0x000003EE nvme/apl/decoder/core.c +1517 nvmet_set_drive_capacity() - Drive total sector: 56
+CPU1: 0x000003EF dispatcher/rdisk.c +6111 <global>() - ns reload lbaf:0
+CPU1: 0x000003F0 nvme/apl/decoder/core.c +514 nvmet_set_ns_attrs() - NS update cap(37e436b0 -> 37e436
+b0), lbaf(0 -> 0)
+CPU1: 0x000003F1 nvme/hal/cmd_proc.c +620 cmd_proc_set_lba_format() - check LBAcnt: 0-37e436b0\n
+CPU1: 0x000003F2 nvme/hal/cmd_proc.c +621 cmd_proc_set_lba_format() - check id: 1 rw: 1
+CPU1: 0x000003F3 dispatcher/rdisk.c +6154 <global>() - ns 1 active\n
+CPU1: 0x000003F4 dispatcher/rdisk.c +7714 rdisk_init_fe() - ENTER GetSensorTemp config
+CPU1: 0x000003F5 dispatcher/trim.c +129 PowerOnInitTrimTable() - power on init trim table,triminfotag
+:12345678, TrimInfo.IsValid 0
+CPU1: 0x000003F6 tcg/tcgnvme.c +866 tcg_if_onetime_init() - tcg_if_onetime_init() bootMode|1, bTcgTbl
+Err|0
+CPU1: 0x000003F7 tcg/tcgnvme.c +955 tcg_if_onetime_init() - [TCG] check in bootup
+CPU1: 0x000003F8 tcg/tcg.c +8391 MbrCtrlTbl_Reset() - MbrCtrlTbl_Reset() - TcgStatus|0 , Enable|0 , D
+one|0
+CPU1: 0x000003F9 tcg/tcg.c +9354 LockingRangeTable_Update() - LockingRangeTable_Update()
+CPU1: 0x000003FA tcg/tcg.c +8248 DumpRangeInfo() - 0 R:0 W:0 *0 ~ &0 ffffffff\n
+CPU1: 0x000003FB btn/crypto.c +1194 tcg_set_aes_range() - [TCG] Set Global Range with single namespac
+e
+CPU1: 0x000003FC btn/crypto.c +1284 tcg_init_aes_key_range() - [TCG] Global check entry_id : 0
+CPU1: 0x000003FD tcg/tcg.c +6421 Tcg_Key_wp_uwp() - [Max set] Tbl_Key1|8fde5c2c , Tbl_Key2|2537e8ee
+CPU1: 0x000003FE tcg/tcg.c +6437 Tcg_Key_wp_uwp() - [TCG]Uwp K1|a20f5368 K2|924236ae
+CPU1: 0x000003FF tcg/tcg.c +6449 Tcg_Key_wp_uwp() - [TCG]Range|0 key unwrap done!
+CPU1: 0x00000400 timestamp of cpu1: 0x000000000000(1970-01-01 08:00:00)       
+CPU1: 0x00000401 tcg/tcg.c +6450 Tcg_Key_wp_uwp() - [TCG]Raw|a20f5368 Tbl|8fde5c2c
+CPU1: 0x00000402 tcg/tcg.c +8391 MbrCtrlTbl_Reset() - MbrCtrlTbl_Reset() - TcgStatus|0 , Enable|0 , D
+one|0
+CPU1: 0x00000403 tcg/tcg.c +8656 SingleUser_Update() - SingleUser_Update()
+CPU1: 0x00000404 tcg/tcg.c +8626 DataStoreAddr_Update() - DataStoreAddr_Update()
+CPU1: 0x00000405 tcg/tcg.c +8636 DataStoreAddr_Update() - DS00: 00000000 00a20000
+CPU1: 0x00000406 tcg/tcgnvme.c +1060 tcg_if_onetime_init() - mTcgStatus|0 bTcgTblErr|0\n
+CPU1: 0x00000407 SN: 0025271W19TE        
+CPU1: 0x00000408 dispatcher/rdisk.c +7754 rdisk_init_fe() - FE done
+CPU1: 0x00000409 main.c +312 main() - init done\n
+CPU3: 0x0000040A ftl/ftl_spor.c +6962 ftl_p2l_skip_bad_update() - trim_pda:0xffffffff page_sn_loop:57
+077 page sn:0x06d43751a threshold:57344
+CPU3: 0x0000040B ftl/ftl_spor.c +7227 ftl_cross_p2l_update_l2p() - usr P2L_done blk:292, vac:0x383e, 
+p_id:0x1 , flag:0x3, isTrimBlk 0x0
+CPU3: 0x0000040C btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x0000040D ftl/ftl_spor.c +9645 ftl_p2l_build_table() - gFtlMgr.GlobalPageSN : 0x06d43751a
+CPU3: 0x0000040E ftl/ftl_spor.c +9649 ftl_p2l_build_table() - USR Blk : 292, GC Blk : 65535, P2L Stat
+us : 0x1
+CPU3: 0x0000040F ftl/ftl_spor.c +9662 ftl_p2l_build_table() - USR Blk : 253, SN : 0xb46c
+CPU3: 0x00000410 btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x00000411 ftl/ftl_spor.c +6962 ftl_p2l_skip_bad_update() - trim_pda:0xffffffff page_sn_loop:57
+085 page sn:0x06d441d22 threshold:57344
+CPU3: 0x00000412 ftl/ftl_spor.c +7227 ftl_cross_p2l_update_l2p() - usr P2L_done blk:253, vac:0x3d17, 
+p_id:0x1 , flag:0x3, isTrimBlk 0x0
+CPU3: 0x00000413 btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x00000414 ftl/ftl_spor.c +9645 ftl_p2l_build_table() - gFtlMgr.GlobalPageSN : 0x06d441d22
+CPU3: 0x00000415 ftl/ftl_spor.c +9649 ftl_p2l_build_table() - USR Blk : 253, GC Blk : 65535, P2L Stat
+us : 0x1
+CPU3: 0x00000416 ftl/ftl_spor.c +9662 ftl_p2l_build_table() - USR Blk : 126, SN : 0xb46d
+CPU3: 0x00000417 btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x00000418 ftl/ftl_spor.c +6962 ftl_p2l_skip_bad_update() - trim_pda:0xffffffff page_sn_loop:57
+081 page sn:0x06d44c51e threshold:57344
+CPU3: 0x00000419 ftl/ftl_spor.c +7227 ftl_cross_p2l_update_l2p() - usr P2L_done blk:126, vac:0x39d3, 
+p_id:0x1 , flag:0x3, isTrimBlk 0x0
+CPU3: 0x0000041A btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x0000041B ftl/ftl_spor.c +9645 ftl_p2l_build_table() - gFtlMgr.GlobalPageSN : 0x06d44c51e
+CPU3: 0x0000041C ftl/ftl_spor.c +9649 ftl_p2l_build_table() - USR Blk : 126, GC Blk : 65535, P2L Stat
+us : 0x1
+CPU3: 0x0000041D ftl/ftl_spor.c +9662 ftl_p2l_build_table() - USR Blk : 467, SN : 0xb46e
+CPU3: 0x0000041E btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x0000041F ftl/ftl_spor.c +6962 ftl_p2l_skip_bad_update() - trim_pda:0xffffffff page_sn_loop:57
+085 page sn:0x06d456d22 threshold:57344
+CPU3: 0x00000420 ftl/ftl_spor.c +7227 ftl_cross_p2l_update_l2p() - usr P2L_done blk:467, vac:0x3e5f, 
+p_id:0x1 , flag:0x3, isTrimBlk 0x0
+CPU3: 0x00000421 btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x00000422 ftl/ftl_spor.c +9645 ftl_p2l_build_table() - gFtlMgr.GlobalPageSN : 0x06d456d22
+CPU3: 0x00000423 ftl/ftl_spor.c +9649 ftl_p2l_build_table() - USR Blk : 467, GC Blk : 65535, P2L Stat
+us : 0x1
+CPU3: 0x00000424 ftl/ftl_spor.c +9662 ftl_p2l_build_table() - USR Blk : 757, SN : 0xb46f
+CPU3: 0x00000425 btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x00000426 ftl/ftl_spor.c +6962 ftl_p2l_skip_bad_update() - trim_pda:0xffffffff page_sn_loop:57
+085 page sn:0x06d461522 threshold:57344
+CPU3: 0x00000427 ftl/ftl_spor.c +7227 ftl_cross_p2l_update_l2p() - usr P2L_done blk:757, vac:0x3868, 
+p_id:0x1 , flag:0x3, isTrimBlk 0x0
+CPU3: 0x00000428 btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x00000429 ftl/ftl_spor.c +9645 ftl_p2l_build_table() - gFtlMgr.GlobalPageSN : 0x06d461522
+CPU3: 0x0000042A ftl/ftl_spor.c +9649 ftl_p2l_build_table() - USR Blk : 757, GC Blk : 65535, P2L Stat
+us : 0x1
+CPU3: 0x0000042B ftl/ftl_spor.c +9662 ftl_p2l_build_table() - USR Blk : 344, SN : 0xb470
+CPU3: 0x0000042C btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x0000042D ftl/ftl_spor.c +6962 ftl_p2l_skip_bad_update() - trim_pda:0xffffffff page_sn_loop:57
+083 page sn:0x06d46bd20 threshold:57344
+CPU3: 0x0000042E ftl/ftl_spor.c +7227 ftl_cross_p2l_update_l2p() - usr P2L_done blk:344, vac:0x38f3, 
+p_id:0x1 , flag:0x3, isTrimBlk 0x0
+CPU3: 0x0000042F btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x00000430 ftl/ftl_spor.c +9645 ftl_p2l_build_table() - gFtlMgr.GlobalPageSN : 0x06d46bd20
+CPU3: 0x00000431 ftl/ftl_spor.c +9649 ftl_p2l_build_table() - USR Blk : 344, GC Blk : 65535, P2L Stat
+us : 0x1
+CPU3: 0x00000432 ftl/ftl_spor.c +9662 ftl_p2l_build_table() - USR Blk : 385, SN : 0xb471
+CPU3: 0x00000433 btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x00000434 ftl/ftl_spor.c +6962 ftl_p2l_skip_bad_update() - trim_pda:0xffffffff page_sn_loop:57
+082 page sn:0x06d47651f threshold:57344
+CPU3: 0x00000435 ftl/ftl_spor.c +7227 ftl_cross_p2l_update_l2p() - usr P2L_done blk:385, vac:0x3922, 
+p_id:0x1 , flag:0x3, isTrimBlk 0x0
+CPU3: 0x00000436 btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x00000437 ftl/ftl_spor.c +9645 ftl_p2l_build_table() - gFtlMgr.GlobalPageSN : 0x06d47651f
+CPU3: 0x00000438 ftl/ftl_spor.c +9649 ftl_p2l_build_table() - USR Blk : 385, GC Blk : 65535, P2L Stat
+us : 0x1
+CPU3: 0x00000439 ftl/ftl_spor.c +9662 ftl_p2l_build_table() - USR Blk : 449, SN : 0xb472
+CPU3: 0x0000043A btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x0000043B ftl/ftl_spor.c +6962 ftl_p2l_skip_bad_update() - trim_pda:0xffffffff page_sn_loop:57
+085 page sn:0x06d480d22 threshold:57344
+CPU3: 0x0000043C ftl/ftl_spor.c +7227 ftl_cross_p2l_update_l2p() - usr P2L_done blk:449, vac:0x3fe9, 
+p_id:0x1 , flag:0x3, isTrimBlk 0x0
+CPU3: 0x0000043D btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x0000043E ftl/ftl_spor.c +9645 ftl_p2l_build_table() - gFtlMgr.GlobalPageSN : 0x06d480d22
+CPU3: 0x0000043F ftl/ftl_spor.c +9649 ftl_p2l_build_table() - USR Blk : 449, GC Blk : 65535, P2L Stat
+us : 0x1
+CPU3: 0x00000440 timestamp of cpu3: 0x000000000000(1970-01-01 08:00:00)       
+CPU3: 0x00000441 ftl/ftl_spor.c +9662 ftl_p2l_build_table() - USR Blk : 395, SN : 0xb473
+CPU3: 0x00000442 btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x00000443 ftl/ftl_spor.c +6962 ftl_p2l_skip_bad_update() - trim_pda:0xffffffff page_sn_loop:57
+081 page sn:0x06d48b51e threshold:57344
+CPU3: 0x00000444 ftl/ftl_spor.c +7227 ftl_cross_p2l_update_l2p() - usr P2L_done blk:395, vac:0x3c15, 
+p_id:0x1 , flag:0x3, isTrimBlk 0x0
+CPU3: 0x00000445 btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x00000446 ftl/ftl_spor.c +9645 ftl_p2l_build_table() - gFtlMgr.GlobalPageSN : 0x06d48b51e
+CPU3: 0x00000447 ftl/ftl_spor.c +9649 ftl_p2l_build_table() - USR Blk : 395, GC Blk : 65535, P2L Stat
+us : 0x1
+CPU3: 0x00000448 ftl/ftl_spor.c +9662 ftl_p2l_build_table() - USR Blk : 432, SN : 0xb474
+CPU3: 0x00000449 btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x0000044A ftl/ftl_spor.c +6962 ftl_p2l_skip_bad_update() - trim_pda:0xffffffff page_sn_loop:57
+085 page sn:0x06d495d22 threshold:57344
+CPU3: 0x0000044B ftl/ftl_spor.c +7227 ftl_cross_p2l_update_l2p() - usr P2L_done blk:432, vac:0x6fa7, 
+p_id:0x1 , flag:0x3, isTrimBlk 0x0
+CPU3: 0x0000044C btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x0000044D ftl/ftl_spor.c +9645 ftl_p2l_build_table() - gFtlMgr.GlobalPageSN : 0x06d495d22
+CPU3: 0x0000044E ftl/ftl_spor.c +9649 ftl_p2l_build_table() - USR Blk : 432, GC Blk : 65535, P2L Stat
+us : 0x1
+CPU3: 0x0000044F ftl/ftl_spor.c +9662 ftl_p2l_build_table() - USR Blk : 412, SN : 0xb475
+CPU3: 0x00000450 btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x00000451 ftl/ftl_spor.c +6962 ftl_p2l_skip_bad_update() - trim_pda:0xffffffff page_sn_loop:57
+085 page sn:0x06d4a0522 threshold:57344
+CPU3: 0x00000452 ftl/ftl_spor.c +7227 ftl_cross_p2l_update_l2p() - usr P2L_done blk:412, vac:0x165ad,
+ p_id:0x1 , flag:0x3, isTrimBlk 0x0
+CPU3: 0x00000453 btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x00000454 ftl/ftl_spor.c +9645 ftl_p2l_build_table() - gFtlMgr.GlobalPageSN : 0x06d4a0522
+CPU3: 0x00000455 ftl/ftl_spor.c +9649 ftl_p2l_build_table() - USR Blk : 412, GC Blk : 65535, P2L Stat
+us : 0x1
+CPU3: 0x00000456 ftl/ftl_spor.c +9662 ftl_p2l_build_table() - USR Blk : 439, SN : 0xb476
+CPU3: 0x00000457 btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x00000458 ftl/ftl_spor.c +6962 ftl_p2l_skip_bad_update() - trim_pda:0xffffffff page_sn_loop:57
+085 page sn:0x06d4aad22 threshold:57344
+CPU3: 0x00000459 ftl/ftl_spor.c +7227 ftl_cross_p2l_update_l2p() - usr P2L_done blk:439, vac:0x19281,
+ p_id:0x1 , flag:0x3, isTrimBlk 0x0
+CPU3: 0x0000045A btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x0000045B ftl/ftl_spor.c +9645 ftl_p2l_build_table() - gFtlMgr.GlobalPageSN : 0x06d4aad22
+CPU3: 0x0000045C ftl/ftl_spor.c +9649 ftl_p2l_build_table() - USR Blk : 439, GC Blk : 65535, P2L Stat
+us : 0x1
+CPU3: 0x0000045D ftl/ftl_spor.c +9662 ftl_p2l_build_table() - USR Blk : 225, SN : 0xb477
+CPU3: 0x0000045E btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x0000045F ftl/ftl_spor.c +6962 ftl_p2l_skip_bad_update() - trim_pda:0xffffffff page_sn_loop:57
+085 page sn:0x06d4b5522 threshold:57344
+CPU3: 0x00000460 ftl/ftl_spor.c +7227 ftl_cross_p2l_update_l2p() - usr P2L_done blk:225, vac:0x170c2,
+ p_id:0x1 , flag:0x3, isTrimBlk 0x0
+CPU3: 0x00000461 btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x00000462 ftl/ftl_spor.c +9645 ftl_p2l_build_table() - gFtlMgr.GlobalPageSN : 0x06d4b5522
+CPU3: 0x00000463 ftl/ftl_spor.c +9649 ftl_p2l_build_table() - USR Blk : 225, GC Blk : 65535, P2L Stat
+us : 0x1
+CPU3: 0x00000464 ftl/ftl_spor.c +9662 ftl_p2l_build_table() - USR Blk : 494, SN : 0xb478
+CPU3: 0x00000465 btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x00000466 ftl/ftl_spor.c +6962 ftl_p2l_skip_bad_update() - trim_pda:0xffffffff page_sn_loop:57
+078 page sn:0x06d4bfd1b threshold:57344
+CPU3: 0x00000467 ftl/ftl_spor.c +7227 ftl_cross_p2l_update_l2p() - usr P2L_done blk:494, vac:0x171ae,
+ p_id:0x1 , flag:0x3, isTrimBlk 0x0
+CPU3: 0x00000468 btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x00000469 ftl/ftl_spor.c +9645 ftl_p2l_build_table() - gFtlMgr.GlobalPageSN : 0x06d4bfd1b
+CPU3: 0x0000046A ftl/ftl_spor.c +9649 ftl_p2l_build_table() - USR Blk : 494, GC Blk : 65535, P2L Stat
+us : 0x1
+CPU3: 0x0000046B ftl/ftl_spor.c +9662 ftl_p2l_build_table() - USR Blk : 293, SN : 0xb47a
+CPU3: 0x0000046C btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x0000046D ftl/ftl_spor.c +6962 ftl_p2l_skip_bad_update() - trim_pda:0xffffffff page_sn_loop:57
+082 page sn:0x06d4ca51f threshold:57344
+CPU3: 0x0000046E ftl/ftl_spor.c +7227 ftl_cross_p2l_update_l2p() - usr P2L_done blk:293, vac:0x171f7,
+ p_id:0x1 , flag:0x3, isTrimBlk 0x0
+CPU3: 0x0000046F btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x00000470 ftl/ftl_spor.c +9645 ftl_p2l_build_table() - gFtlMgr.GlobalPageSN : 0x06d4ca51f
+CPU3: 0x00000471 ftl/ftl_spor.c +9649 ftl_p2l_build_table() - USR Blk : 293, GC Blk : 65535, P2L Stat
+us : 0x1
+CPU3: 0x00000472 ftl/ftl_spor.c +9662 ftl_p2l_build_table() - USR Blk : 418, SN : 0xb47b
+CPU3: 0x00000473 ftl/ftl_spor.c +5699 ftl_scan_first_blank_p2l_pos() - [IN] ftl_scan_first_blank_p2l_
+pos
+CPU3: 0x00000474 ftl/ftl_spor.c +8078 ftl_extract_p2l_table() - spb_id 418 ftl_build_tbl_type[spb_id]
+ 6, shr_wl_per_p2l 8
+CPU3: 0x00000475 ftl/ftl_spor.c +8080 ftl_extract_p2l_table() - last P2L pda : 0x689e030, p2l_grp_idx
+ : 40 ,p2l_wl_idx: 320
+CPU3: 0x00000476 ftl/ftl_spor.c +8083 ftl_extract_p2l_table() - first WL blank pda : 0x689ec00, blank
+_grp_idx : 41 , blank_wl_idx : 328
+CPU3: 0x00000477 ftl/ftl_spor.c +8085 ftl_extract_p2l_table() - first Dummy pda : 0xffffffff, grp idx
+ : 85
+CPU3: 0x00000478 ftl/ftl_spor.c +8087 ftl_extract_p2l_table() - last Dummy pda : 0xffffffff, grp idx 
+: 85
+CPU3: 0x00000479 ftl/ftl_spor.c +5752 ftl_read_p2l_from_nand_with_list() - p2l_list grp_threshold : 4
+0
+CPU3: 0x0000047A ftl/ftl_spor.c +7800 ftl_wl_p2l_table_rebuild() - [IN] ftl_wl_p2l_table_rebuild, p2l
+_fail_cnt : 2
+CPU3: 0x0000047B ftl/ftl_spor.c +7809 ftl_wl_p2l_table_rebuild() - fail grp_idx:40 wl_S:320 wl_E:327
+CPU3: 0x0000047C ftl/ftl_spor.c +4799 ftl_page_aux_build_p2l() - [IN] ftl_page_aux_build_p2l
+CPU3: 0x0000047D ftl/ftl_spor.c +7809 ftl_wl_p2l_table_rebuild() - fail grp_idx:41 wl_S:328 wl_E:335
+CPU3: 0x0000047E ftl/ftl_spor.c +4799 ftl_page_aux_build_p2l() - [IN] ftl_page_aux_build_p2l
+CPU3: 0x0000047F ftl/ftl_spor.c +8316 ftl_extract_p2l_table() - open blk aux build done,p2l_grp:40,gr
+p_threshold:42,blk type:6
+CPU3: 0x00000480 timestamp of cpu3: 0x000000000000(1970-01-01 08:00:00)       
+CPU3: 0x00000481 ftl/spb_mgr.c +897 FTL_BlockPopList() - [FTL]SBlk 418 is not in pool 4, now in pool 
+4
+CPU3: 0x00000482 ftl/spb_mgr.c +1204 FTL_BlockPushList() - [FTL]Push list blk:418 pool:1 cnt:91 nxt_b
+lk:65535
+CPU3: 0x00000483 btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x00000484 ftl/ftl_spor.c +6875 ftl_p2l_skip_bad_update() - skip update>>loop_idx:41984 thresho
+ld:43008
+CPU3: 0x00000485 ftl/ftl_spor.c +6962 ftl_p2l_skip_bad_update() - trim_pda:0xffffffff page_sn_loop:41
+205 page sn:0x06d4d1e20 threshold:43008
+CPU3: 0x00000486 ftl/ftl_spor.c +7227 ftl_cross_p2l_update_l2p() - usr P2L_done blk:418, vac:0x0, p_i
+d:0x1 , flag:0x0, isTrimBlk 0x0
+CPU3: 0x00000487 btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x00000488 ftl/ftl_spor.c +9645 ftl_p2l_build_table() - gFtlMgr.GlobalPageSN : 0x06d4d1e20
+CPU3: 0x00000489 ftl/ftl_spor.c +9649 ftl_p2l_build_table() - USR Blk : 418, GC Blk : 65535, P2L Stat
+us : 0x1
+CPU3: 0x0000048A ftl/ftl_spor.c +9753 ftl_p2l_build_table() - [SPOR] PlpUSRBlk[65535] PlpGCBlk[65535]
+CPU3: 0x0000048B ftl/ftl_spor.c +9756 ftl_p2l_build_table() - Function time cost : 2099119 us build_b
+lk_cnt:16
+CPU3: 0x0000048C ftl/ftl_spor.c +9054 is_need_l2p_build_vac() - [FTL] 1 0 1 0
+CPU3: 0x0000048D btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x0000048E btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x0000048F btn/l2p/l2p_mgr.c +2552 l2p_mgr_vcnt_rebuild() - building vcnt tbl.....
+CPU3: 0x00000490 btn/l2p/l2p_mgr.c +2571 l2p_mgr_vcnt_rebuild() - building vcnt tbl done
+CPU3: 0x00000491 ftl/ftl_spor.c +10508 ftl_check_all_blk_status() - [IN] ftl_check_all_blk_status
+CPU3: 0x00000492 btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x00000493 btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x00000494 btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x00000495 btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x00000496 ftl/ftl_spor.c +2833 ftl_spor_pbt_push_free() - [IN] ftl_spor_pbt_push_free
+CPU3: 0x00000497 ftl/ftl_spor.c +2913 ftl_spor_pbt_push_free() - [IN] ftl_spor_gcd_push_free
+CPU3: 0x00000498 btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x00000499 btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x0000049A btn/dtag/dtag.c +357 dtag_cont_get() - 0: cont DTAG 326-1
+CPU3: 0x0000049B ftl/ftl_spor.c +10521 ftl_free_vac_zero_blk() - [IN] ftl_free_vac_zero_blk
+CPU3: 0x0000049C btn/dtag/dtag.c +399 dtag_cont_put() - 0: recycle cont Dtag(326)-1 avail(16) evt(0)
+CPU3: 0x0000049D ftl/ftl_spor.c +693 ftl_spor_spb_desc_sync() - [IN] ftl_spor_spb_desc_sync
+CPU3: 0x0000049E ftl/ftl_spor.c +10473 ftl_set_spor_dummy_blk_flag() - [IN] ftl_set_spor_dummy_blk_fl
+ag
+CPU3: 0x0000049F  +0 () - /* 9E37: 000001A2,00000142,00000000,000000E0,00000000,00000000 */
+CPU3: 0x000004A0  +0 () - /* FE8B: 00000142,00000143,00000000,00000000,00000000,00000000 */
+CPU3: 0x000004A1 ftl/ftl_spor.c +5699 ftl_scan_first_blank_p2l_pos() - [IN] ftl_scan_first_blank_p2l_
+pos
+CPU3: 0x000004A2 ftl/ftl_spor.c +8078 ftl_extract_p2l_table() - spb_id 418 ftl_build_tbl_type[spb_id]
+ 6, shr_wl_per_p2l 8
+CPU3: 0x000004A3 ftl/ftl_spor.c +8080 ftl_extract_p2l_table() - last P2L pda : 0x689e030, p2l_grp_idx
+ : 40 ,p2l_wl_idx: 320
+CPU3: 0x000004A4 ftl/ftl_spor.c +8083 ftl_extract_p2l_table() - first WL blank pda : 0x689ec00, blank
+_grp_idx : 41 , blank_wl_idx : 328
+CPU3: 0x000004A5 ftl/ftl_spor.c +8085 ftl_extract_p2l_table() - first Dummy pda : 0xffffffff, grp idx
+ : 85
+CPU3: 0x000004A6 ftl/ftl_spor.c +8087 ftl_extract_p2l_table() - last Dummy pda : 0xffffffff, grp idx 
+: 85
+CPU3: 0x000004A7 ftl/ftl_spor.c +5752 ftl_read_p2l_from_nand_with_list() - p2l_list grp_threshold : 4
+0
+CPU3: 0x000004A8 ftl/ftl_spor.c +7800 ftl_wl_p2l_table_rebuild() - [IN] ftl_wl_p2l_table_rebuild, p2l
+_fail_cnt : 2
+CPU3: 0x000004A9 ftl/ftl_spor.c +7809 ftl_wl_p2l_table_rebuild() - fail grp_idx:40 wl_S:320 wl_E:327
+CPU3: 0x000004AA ftl/ftl_spor.c +4799 ftl_page_aux_build_p2l() - [IN] ftl_page_aux_build_p2l
+CPU3: 0x000004AB ftl/ftl_spor.c +7809 ftl_wl_p2l_table_rebuild() - fail grp_idx:41 wl_S:328 wl_E:335
+CPU3: 0x000004AC ftl/ftl_spor.c +4799 ftl_page_aux_build_p2l() - [IN] ftl_page_aux_build_p2l
+CPU3: 0x000004AD ftl/ftl_spor.c +8316 ftl_extract_p2l_table() - open blk aux build done,p2l_grp:40,gr
+p_threshold:42,blk type:6
+
+CPU死前吐LOG
+
+CPU3: 0x000004AE  +0 () - /* BEA5: 0689E000,045D5892,045D5893,045D5894,045D5895,00000000 */
+CPU3: 0x000004AF  +0 () - /* BEA5: 0689E004,045D5896,045D5897,045D5898,045D5899,00000000 */
+CPU3: 0x000004B0  +0 () - /* BEA5: 0689E008,045D589A,045D589B,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004B1  +0 () - /* BEA5: 0689E00C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004B2  +0 () - /* BEA5: 0689E080,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004B3  +0 () - /* BEA5: 0689E084,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004B4  +0 () - /* BEA5: 0689E088,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004B5  +0 () - /* BEA5: 0689E08C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004B6  +0 () - /* BEA5: 0689E100,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004B7  +0 () - /* BEA5: 0689E104,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004B8  +0 () - /* BEA5: 0689E108,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004B9  +0 () - /* BEA5: 0689E10C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004BA  +0 () - /* BEA5: 0689E010,0440D622,045D589C,045D589D,045D589E,00000000 */
+CPU3: 0x000004BB  +0 () - /* BEA5: 0689E014,045D589F,045D58A0,045D58A1,045D58A2,00000000 */
+CPU3: 0x000004BC  +0 () - /* BEA5: 0689E018,045D58A3,045D58A4,045D58A5,045D58A6,00000000 */
+CPU3: 0x000004BD  +0 () - /* BEA5: 0689E01C,045D58A7,045D58A8,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004BE  +0 () - /* BEA5: 0689E090,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004BF  +0 () - /* BEA5: 0689E094,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004C0 timestamp of cpu3: 0x000000000000(1970-01-01 08:00:00)       
+CPU3: 0x000004C1  +0 () - /* BEA5: 0689E098,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004C2  +0 () - /* BEA5: 0689E09C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004C3  +0 () - /* BEA5: 0689E110,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004C4  +0 () - /* BEA5: 0689E114,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004C5  +0 () - /* BEA5: 0689E118,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004C6  +0 () - /* BEA5: 0689E11C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004C7  +0 () - /* BEA5: 0689E020,00DBEF75,00DBEF76,00DBEF77,00DBEF78,00000000 */
+CPU3: 0x000004C8  +0 () - /* BEA5: 0689E024,00DBEF79,00DBEF7A,00DBEF7B,00DBEF7C,00000000 */
+CPU3: 0x000004C9  +0 () - /* BEA5: 0689E028,00DBEF7D,00DBEF7E,00DBEF7F,00DBEF80,00000000 */
+CPU3: 0x000004CA  +0 () - /* BEA5: 0689E02C,00DBEF81,0440D622,045D58A9,045D58AA,00000000 */
+CPU3: 0x000004CB  +0 () - /* BEA5: 0689E0A0,045D58AB,045D58AC,045D58AD,045D58AE,00000000 */
+CPU3: 0x000004CC  +0 () - /* BEA5: 0689E0A4,045D58AF,045D58B0,045D58B1,045D58B2,00000000 */
+CPU3: 0x000004CD  +0 () - /* BEA5: 0689E0A8,045D58B3,045D58B4,045D58B5,FFFFFFF9,00000000 */
+CPU3: 0x000004CE  +0 () - /* BEA5: 0689E0AC,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004CF  +0 () - /* BEA5: 0689E120,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004D0  +0 () - /* BEA5: 0689E124,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004D1  +0 () - /* BEA5: 0689E128,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004D2  +0 () - /* BEA5: 0689E12C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004D3  +0 () - /* BEA5: 0689E030,FFFFFFFE,FFFFFFFE,FFFFFFFE,FFFFFFF9,00000000 */
+CPU3: 0x000004D4  +0 () - /* BEA5: 0689E034,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004D5  +0 () - /* BEA5: 0689E038,0440D622,0440D623,045D58B6,045D58B7,00000000 */
+CPU3: 0x000004D6  +0 () - /* BEA5: 0689E03C,045D58B8,045D58B9,045D58BA,045D58BB,00000000 */
+CPU3: 0x000004D7  +0 () - /* BEA5: 0689E0B0,045D58BC,045D58BD,045D58BE,045D58BF,00000000 */
+CPU3: 0x000004D8  +0 () - /* BEA5: 0689E0B4,045D58C0,045D58C1,045D58C2,045D58C3,00000000 */
+CPU3: 0x000004D9  +0 () - /* BEA5: 0689E0B8,045D58C4,045D58C5,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004DA  +0 () - /* BEA5: 0689E0BC,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004DB  +0 () - /* BEA5: 0689E130,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004DC  +0 () - /* BEA5: 0689E134,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004DD  +0 () - /* BEA5: 0689E138,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004DE  +0 () - /* BEA5: 0689E13C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004DF  +0 () - /* BEA5: 0689E040,00DBEF82,00DBEF83,00DBEF84,00DBEF85,00000000 */
+CPU3: 0x000004E0  +0 () - /* BEA5: 0689E044,00DBEF86,00DBEF87,0440D623,045D58C6,00000000 */
+CPU3: 0x000004E1  +0 () - /* BEA5: 0689E048,045D58C7,045D58C8,045D58C9,045D58CA,00000000 */
+CPU3: 0x000004E2  +0 () - /* BEA5: 0689E04C,045D58CB,045D58CC,045D58CD,045D58CE,00000000 */
+CPU3: 0x000004E3  +0 () - /* BEA5: 0689E0C0,045D58CF,045D58D0,045D58D1,045D58D2,00000000 */
+CPU3: 0x000004E4  +0 () - /* BEA5: 0689E0C4,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004E5  +0 () - /* BEA5: 0689E0C8,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004E6  +0 () - /* BEA5: 0689E0CC,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004E7  +0 () - /* BEA5: 0689E140,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004E8  +0 () - /* BEA5: 0689E144,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004E9  +0 () - /* BEA5: 0689E148,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004EA  +0 () - /* BEA5: 0689E14C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004EB  +0 () - /* BEA5: 0689E050,00238AD6,0440D623,0440D624,045D58D3,00000000 */
+CPU3: 0x000004EC  +0 () - /* BEA5: 0689E054,045D58D4,045D58D5,045D58D6,045D58D7,00000000 */
+CPU3: 0x000004ED  +0 () - /* BEA5: 0689E058,045D58D8,045D58D9,045D58DA,045D58DB,00000000 */
+CPU3: 0x000004EE  +0 () - /* BEA5: 0689E05C,045D58DC,045D58DD,045D58DE,045D58DF,00000000 */
+CPU3: 0x000004EF  +0 () - /* BEA5: 0689E0D0,045D58E0,045D58E1,045D58E2,FFFFFFF9,00000000 */
+CPU3: 0x000004F0  +0 () - /* BEA5: 0689E0D4,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004F1  +0 () - /* BEA5: 0689E0D8,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004F2  +0 () - /* BEA5: 0689E0DC,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004F3  +0 () - /* BEA5: 0689E150,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004F4  +0 () - /* BEA5: 0689E154,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004F5  +0 () - /* BEA5: 0689E158,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004F6  +0 () - /* BEA5: 0689E15C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x000004F7  +0 () - /* BEA5: 0689E060,0440D624,045D58E3,045D58E4,045D58E5,00000000 */
+CPU3: 0x000004F8  +0 () - /* BEA5: 0689E064,045D58E6,045D58E7,045D58E8,045D58E9,00000000 */
+CPU3: 0x000004F9  +0 () - /* BEA5: 0689E068,045D58EA,045D58EB,045D58EC,045D58ED,00000000 */
+CPU3: 0x000004FA  +0 () - /* BEA5: 0689E06C,045D58EE,045D58EF,00DBEF88,00DBEF89,00000000 */
+CPU3: 0x000004FB  +0 () - /* BEA5: 0689E0E0,00DBEF8A,00DBEF8B,00DBEF8C,00DBEF8D,00000000 */
+CPU3: 0x000004FC  +0 () - /* BEA5: 0689E0E4,00DBEF8E,00DBEF8F,00DBEF90,00DBEF91,00000000 */
+CPU3: 0x000004FD  +0 () - /* BEA5: 0689E0E8,00DBEF92,00DBEF93,00DBEF94,0440AB11,00000000 */
+CPU3: 0x000004FE  +0 () - /* BEA5: 0689E0EC,0440AB12,0440AB13,0440D624,0440D625,00000000 */
+CPU3: 0x000004FF  +0 () - /* BEA5: 0689E160,045D58F0,045D58F1,045D58F2,045D58F3,00000000 */
+CPU3: 0x00000500 timestamp of cpu3: 0x000000000000(1970-01-01 08:00:00)       
+CPU3: 0x00000501  +0 () - /* BEA5: 0689E164,045D58F4,045D58F5,045D58F6,045D58F7,00000000 */
+CPU3: 0x00000502  +0 () - /* BEA5: 0689E168,045D58F8,045D58F9,045D58FA,045D58FB,00000000 */
+CPU3: 0x00000503  +0 () - /* BEA5: 0689E16C,045D58FC,045D58FD,045D58FE,045D58FF,00000000 */
+CPU3: 0x00000504  +0 () - /* BEA5: 0689E074,045D5900,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000505  +0 () - /* BEA5: 0689E078,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000506  +0 () - /* BEA5: 0689E07C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000507  +0 () - /* BEA5: 0689E0F4,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000508  +0 () - /* BEA5: 0689E0F8,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000509  +0 () - /* BEA5: 0689E0FC,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000050A  +0 () - /* BEA5: 0689E174,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000050B  +0 () - /* BEA5: 0689E178,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000050C  +0 () - /* BEA5: 0689E17C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000050D  +0 () - /* BEA5: 0689E180,0023E982,0440D625,045D5901,045D5902,00000000 */
+CPU3: 0x0000050E  +0 () - /* BEA5: 0689E184,045D5903,045D5904,045D5905,045D5906,00000000 */
+CPU3: 0x0000050F  +0 () - /* BEA5: 0689E188,045D5907,045D5908,045D5909,045D590A,00000000 */
+CPU3: 0x00000510  +0 () - /* BEA5: 0689E18C,045D590B,045D590C,045D590D,00DBEF95,00000000 */
+CPU3: 0x00000511  +0 () - /* BEA5: 0689E200,00DBEF96,00DBEF97,00DBEF98,00DBEF99,00000000 */
+CPU3: 0x00000512  +0 () - /* BEA5: 0689E204,00DBEF9A,00DBEF9B,00DBEF9C,00DBEF9D,00000000 */
+CPU3: 0x00000513  +0 () - /* BEA5: 0689E208,00DBEF9E,00DBEF9F,00DBEFA0,003C38BA,00000000 */
+CPU3: 0x00000514  +0 () - /* BEA5: 0689E20C,003C38BB,003C38BC,003C38BD,003C38BE,00000000 */
+CPU3: 0x00000515  +0 () - /* BEA5: 0689E280,003C38BF,003C38C0,002396D1,0440D625,00000000 */
+CPU3: 0x00000516  +0 () - /* BEA5: 0689E284,0440D626,045D590E,045D590F,045D5910,00000000 */
+CPU3: 0x00000517  +0 () - /* BEA5: 0689E288,045D5911,045D5912,045D5913,045D5914,00000000 */
+CPU3: 0x00000518  +0 () - /* BEA5: 0689E28C,045D5915,045D5916,045D5917,045D5918,00000000 */
+CPU3: 0x00000519  +0 () - /* BEA5: 0689E190,045D5919,045D591A,045D591B,045D591C,00000000 */
+CPU3: 0x0000051A  +0 () - /* BEA5: 0689E194,045D591D,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000051B  +0 () - /* BEA5: 0689E198,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000051C  +0 () - /* BEA5: 0689E19C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000051D  +0 () - /* BEA5: 0689E210,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000051E  +0 () - /* BEA5: 0689E214,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000051F  +0 () - /* BEA5: 0689E218,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000520  +0 () - /* BEA5: 0689E21C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000521  +0 () - /* BEA5: 0689E290,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000522  +0 () - /* BEA5: 0689E294,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000523  +0 () - /* BEA5: 0689E298,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000524  +0 () - /* BEA5: 0689E29C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000525  +0 () - /* BEA5: 0689E1A0,00238AD7,0440D626,045D591E,045D591F,00000000 */
+CPU3: 0x00000526  +0 () - /* BEA5: 0689E1A4,045D5920,045D5921,045D5922,045D5923,00000000 */
+CPU3: 0x00000527  +0 () - /* BEA5: 0689E1A8,045D5924,045D5925,045D5926,045D5927,00000000 */
+CPU3: 0x00000528  +0 () - /* BEA5: 0689E1AC,045D5928,045D5929,045D592A,00DBEFA1,00000000 */
+CPU3: 0x00000529  +0 () - /* BEA5: 0689E220,00DBEFA2,00DBEFA3,00DBEFA4,00DBEFA5,00000000 */
+CPU3: 0x0000052A  +0 () - /* BEA5: 0689E224,00DBEFA6,00DBEFA7,00DBEFA8,00DBEFA9,00000000 */
+CPU3: 0x0000052B  +0 () - /* BEA5: 0689E228,00DBEFAA,00DBEFAB,00DBEFAC,00DBEFAD,00000000 */
+CPU3: 0x0000052C  +0 () - /* BEA5: 0689E22C,00DBEFAE,00DBEFAF,00DBEFB0,00DBEFB1,00000000 */
+CPU3: 0x0000052D  +0 () - /* BEA5: 0689E2A0,00DBEFB2,0440D626,045D592B,045D592C,00000000 */
+CPU3: 0x0000052E  +0 () - /* BEA5: 0689E2A4,045D592D,045D592E,045D592F,045D5930,00000000 */
+CPU3: 0x0000052F  +0 () - /* BEA5: 0689E2A8,045D5931,045D5932,045D5933,045D5934,00000000 */
+CPU3: 0x00000530  +0 () - /* BEA5: 0689E2AC,045D5935,045D5936,045D5937,0023A4F0,00000000 */
+CPU3: 0x00000531  +0 () - /* BEA5: 0689E1B0,00137A9A,00137A9B,00137A9C,00137A9D,00000000 */
+CPU3: 0x00000532  +0 () - /* BEA5: 0689E1B4,00137A9E,00137A9F,00137AA0,00137AA1,00000000 */
+CPU3: 0x00000533  +0 () - /* BEA5: 0689E1B8,00137AA2,00137AA3,00137AA4,00137AA5,00000000 */
+CPU3: 0x00000534  +0 () - /* BEA5: 0689E1BC,0009E6CB,0009E6CC,0009E6CD,0009E6CE,00000000 */
+CPU3: 0x00000535  +0 () - /* BEA5: 0689E230,0009E6CF,0009E6D0,0009E6D1,003C6512,00000000 */
+CPU3: 0x00000536  +0 () - /* BEA5: 0689E234,003C6513,003C6514,01398352,01398353,00000000 */
+CPU3: 0x00000537  +0 () - /* BEA5: 0689E238,01398354,01398355,01398356,01398357,00000000 */
+CPU3: 0x00000538  +0 () - /* BEA5: 0689E23C,01398358,01398359,0139835A,0139835B,00000000 */
+CPU3: 0x00000539  +0 () - /* BEA5: 0689E2B0,0139835C,0139835D,0139835E,0139835F,00000000 */
+CPU3: 0x0000053A  +0 () - /* BEA5: 0689E2B4,01398360,01398361,01398362,01398363,00000000 */
+CPU3: 0x0000053B  +0 () - /* BEA5: 0689E2B8,01398364,00240405,00240406,003BBB06,00000000 */
+CPU3: 0x0000053C  +0 () - /* BEA5: 0689E2BC,003BBB07,024098DC,0440B0A6,0440B0A7,00000000 */
+CPU3: 0x0000053D  +0 () - /* BEA5: 0689E1C0,0440B0A8,0440B0A9,0440B0AA,0440B0AB,00000000 */
+CPU3: 0x0000053E  +0 () - /* BEA5: 0689E1C4,0440B0AC,0440B0AD,0440B0AE,0032017C,00000000 */
+CPU3: 0x0000053F  +0 () - /* BEA5: 0689E1C8,00328102,003A0101,003A0131,011A0135,00000000 */
+CPU3: 0x00000540 timestamp of cpu3: 0x000000000000(1970-01-01 08:00:00)       
+CPU3: 0x00000541  +0 () - /* BEA5: 0689E1CC,011A0154,011A8108,013A0125,FFFFFFF9,00000000 */
+CPU3: 0x00000542  +0 () - /* BEA5: 0689E240,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000543  +0 () - /* BEA5: 0689E244,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000544  +0 () - /* BEA5: 0689E248,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000545  +0 () - /* BEA5: 0689E24C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000546  +0 () - /* BEA5: 0689E2C0,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000547  +0 () - /* BEA5: 0689E2C4,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000548  +0 () - /* BEA5: 0689E2C8,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000549  +0 () - /* BEA5: 0689E2CC,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000054A  +0 () - /* BEA5: 0689E1D0,0440D626,0440D627,045D5938,045D5939,00000000 */
+CPU3: 0x0000054B  +0 () - /* BEA5: 0689E1D4,045D593A,045D593B,045D593C,045D593D,00000000 */
+CPU3: 0x0000054C  +0 () - /* BEA5: 0689E1D8,045D593E,045D593F,045D5940,045D5941,00000000 */
+CPU3: 0x0000054D  +0 () - /* BEA5: 0689E1DC,045D5942,045D5943,045D5944,045D5945,00000000 */
+CPU3: 0x0000054E  +0 () - /* BEA5: 0689E250,045D5946,045D5947,045D5948,FFFFFFF9,00000000 */
+CPU3: 0x0000054F  +0 () - /* BEA5: 0689E254,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000550  +0 () - /* BEA5: 0689E258,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000551  +0 () - /* BEA5: 0689E25C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000552  +0 () - /* BEA5: 0689E2D0,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000553  +0 () - /* BEA5: 0689E2D4,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000554  +0 () - /* BEA5: 0689E2D8,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000555  +0 () - /* BEA5: 0689E2DC,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000556  +0 () - /* BEA5: 0689E1E0,00DBEFB3,00DBEFB4,00DBEFB5,00DBEFB6,00000000 */
+CPU3: 0x00000557  +0 () - /* BEA5: 0689E1E4,00DBEFB7,00DBEFB8,00DBEFB9,00DBEFBA,00000000 */
+CPU3: 0x00000558  +0 () - /* BEA5: 0689E1E8,00DBEFBB,00DBEFBC,00DBEFBD,00DBEFBE,00000000 */
+CPU3: 0x00000559  +0 () - /* BEA5: 0689E1EC,00DBEFBF,00DBEFC0,00DBEFC1,00DBEFC2,00000000 */
+CPU3: 0x0000055A  +0 () - /* BEA5: 0689E260,00DBEFC3,00DBEFC4,00DBEFC5,00DBEFC6,00000000 */
+CPU3: 0x0000055B  +0 () - /* BEA5: 0689E264,00DBEFC7,00DBEFC8,00DBEFC9,00DBEFCA,00000000 */
+CPU3: 0x0000055C  +0 () - /* BEA5: 0689E268,00DBEFCB,00DBEFCC,00DBEFCD,00DBEFCE,00000000 */
+CPU3: 0x0000055D  +0 () - /* BEA5: 0689E26C,00DBEFCF,0440D627,045D5949,045D594A,00000000 */
+CPU3: 0x0000055E  +0 () - /* BEA5: 0689E2E0,045D594B,045D594C,045D594D,045D594E,00000000 */
+CPU3: 0x0000055F  +0 () - /* BEA5: 0689E2E4,045D594F,045D5950,045D5951,045D5952,00000000 */
+CPU3: 0x00000560  +0 () - /* BEA5: 0689E2E8,045D5953,045D5954,045D5955,04409340,00000000 */
+CPU3: 0x00000561  +0 () - /* BEA5: 0689E2EC,04409341,04409342,01C10A00,01C10A0B,00000000 */
+CPU3: 0x00000562  +0 () - /* BEA5: 0689E1F4,01C13528,03110A10,03110A20,03110A27,00000000 */
+CPU3: 0x00000563  +0 () - /* BEA5: 0689E1F8,031133BC,031133BD,031133F8,031133F9,00000000 */
+CPU3: 0x00000564  +0 () - /* BEA5: 0689E1FC,03118AAA,03118AAD,003C21D7,003C21D8,00000000 */
+CPU3: 0x00000565  +0 () - /* BEA5: 0689E274,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000566  +0 () - /* BEA5: 0689E278,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000567  +0 () - /* BEA5: 0689E27C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000568  +0 () - /* BEA5: 0689E2F4,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000569  +0 () - /* BEA5: 0689E2F8,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000056A  +0 () - /* BEA5: 0689E2FC,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000056B  +0 () - /* BEA5: 0689E300,0440D627,0440D628,045D5956,045D5957,00000000 */
+CPU3: 0x0000056C  +0 () - /* BEA5: 0689E304,045D5958,045D5959,045D595A,045D595B,00000000 */
+CPU3: 0x0000056D  +0 () - /* BEA5: 0689E308,045D595C,045D595D,045D595E,045D595F,00000000 */
+CPU3: 0x0000056E  +0 () - /* BEA5: 0689E30C,045D5960,045D5961,045D5962,045D5963,00000000 */
+CPU3: 0x0000056F  +0 () - /* BEA5: 0689E380,045D5964,045D5965,045D5966,0023A4F1,00000000 */
+CPU3: 0x00000570  +0 () - /* BEA5: 0689E384,0440D628,045D5967,045D5968,045D5969,00000000 */
+CPU3: 0x00000571  +0 () - /* BEA5: 0689E388,045D596A,045D596B,045D596C,045D596D,00000000 */
+CPU3: 0x00000572  +0 () - /* BEA5: 0689E38C,045D596E,045D596F,045D5970,045D5971,00000000 */
+CPU3: 0x00000573  +0 () - /* BEA5: 0689E400,045D5972,045D5973,00DBEFD0,00DBEFD1,00000000 */
+CPU3: 0x00000574  +0 () - /* BEA5: 0689E404,00DBEFD2,00DBEFD3,00DBEFD4,00DBEFD5,00000000 */
+CPU3: 0x00000575  +0 () - /* BEA5: 0689E408,00DBEFD6,00DBEFD7,00DBEFD8,00DBEFD9,00000000 */
+CPU3: 0x00000576  +0 () - /* BEA5: 0689E40C,00DBEFDA,00DBEFDB,00DBEFDC,00DBEFDD,00000000 */
+CPU3: 0x00000577  +0 () - /* BEA5: 0689E310,00DBEFDE,00DBEFDF,00DBEFE0,00DBEFE1,00000000 */
+CPU3: 0x00000578  +0 () - /* BEA5: 0689E314,00DBEFE2,00DBEFE3,00DBEFE4,00DBEFE5,00000000 */
+CPU3: 0x00000579  +0 () - /* BEA5: 0689E318,003AAC05,0440D628,0440D629,045D5974,00000000 */
+CPU3: 0x0000057A  +0 () - /* BEA5: 0689E31C,045D5975,045D5976,045D5977,045D5978,00000000 */
+CPU3: 0x0000057B  +0 () - /* BEA5: 0689E390,045D5979,045D597A,045D597B,045D597C,00000000 */
+CPU3: 0x0000057C  +0 () - /* BEA5: 0689E394,045D597D,045D597E,045D597F,045D5980,00000000 */
+CPU3: 0x0000057D  +0 () - /* BEA5: 0689E398,045D5981,045D5982,045D5983,00238AD8,00000000 */
+CPU3: 0x0000057E  +0 () - /* BEA5: 0689E39C,0440D629,045D5984,045D5985,045D5986,00000000 */
+CPU3: 0x0000057F  +0 () - /* BEA5: 0689E410,045D5987,045D5988,045D5989,045D598A,00000000 */
+CPU3: 0x00000580 timestamp of cpu3: 0x000000000000(1970-01-01 08:00:00)       
+CPU3: 0x00000581  +0 () - /* BEA5: 0689E414,045D598B,045D598C,045D598D,045D598E,00000000 */
+CPU3: 0x00000582  +0 () - /* BEA5: 0689E418,045D598F,045D5990,00DBEFE6,00DBEFE7,00000000 */
+CPU3: 0x00000583  +0 () - /* BEA5: 0689E41C,00DBEFE8,00DBEFE9,00DBEFEA,00DBEFEB,00000000 */
+CPU3: 0x00000584  +0 () - /* BEA5: 0689E320,00DBEFEC,00DBEFED,00DBEFEE,00DBEFEF,00000000 */
+CPU3: 0x00000585  +0 () - /* BEA5: 0689E324,00DBEFF0,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000586  +0 () - /* BEA5: 0689E328,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000587  +0 () - /* BEA5: 0689E32C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000588  +0 () - /* BEA5: 0689E3A0,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000589  +0 () - /* BEA5: 0689E3A4,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000058A  +0 () - /* BEA5: 0689E3A8,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000058B  +0 () - /* BEA5: 0689E3AC,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000058C  +0 () - /* BEA5: 0689E420,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000058D  +0 () - /* BEA5: 0689E424,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000058E  +0 () - /* BEA5: 0689E428,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000058F  +0 () - /* BEA5: 0689E42C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000590  +0 () - /* BEA5: 0689E330,0440D629,0440D62A,045D5991,045D5992,00000000 */
+CPU3: 0x00000591  +0 () - /* BEA5: 0689E334,045D5993,045D5994,045D5995,045D5996,00000000 */
+CPU3: 0x00000592  +0 () - /* BEA5: 0689E338,045D5997,045D5998,045D5999,045D599A,00000000 */
+CPU3: 0x00000593  +0 () - /* BEA5: 0689E33C,045D599B,045D599C,045D599D,045D599E,00000000 */
+CPU3: 0x00000594  +0 () - /* BEA5: 0689E3B0,045D599F,045D59A0,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000595  +0 () - /* BEA5: 0689E3B4,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000596  +0 () - /* BEA5: 0689E3B8,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000597  +0 () - /* BEA5: 0689E3BC,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000598  +0 () - /* BEA5: 0689E430,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x00000599  +0 () - /* BEA5: 0689E434,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000059A  +0 () - /* BEA5: 0689E438,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000059B  +0 () - /* BEA5: 0689E43C,FFFFFFF9,FFFFFFF9,FFFFFFF9,FFFFFFF9,00000000 */
+CPU3: 0x0000059C  +0 () - /* BEA5: 0689E340,0440D62A,045D59A1,045D59A2,045D59A3,00000000 */
+CPU3: 0x0000059D  +0 () - /* BEA5: 0689E344,045D59A4,045D59A5,045D59A6,045D59A7,00000000 */
+CPU3: 0x0000059E  +0 () - /* BEA5: 0689E348,045D59A8,045D59A9,045D59AA,045D59AB,00000000 */
+CPU3: 0x0000059F  +0 () - /* BEA5: 0689E34C,045D59AC,045D59AD,0023A4F2,00DBEFF1,00000000 */
+CPU3: 0x000005A0  +0 () - /* BEA5: 0689E3C0,00DBEFF2,00DBEFF3,00DBEFF4,00DBEFF5,00000000 */
+CPU3: 0x000005A1  +0 () - /* BEA5: 0689E3C4,00DBEFF6,00DBEFF7,00DBEFF8,00DBEFF9,00000000 */
+CPU3: 0x000005A2  +0 () - /* BEA5: 0689E3C8,00DBEFFA,00DBEFFB,00DBEFFC,00DBEFFD,00000000 */
+CPU3: 0x000005A3  +0 () - /* BEA5: 0689E3CC,00DBEFFE,0440D62A,045D59AE,045D59AF,00000000 */
+CPU3: 0x000005A4  +0 () - /* BEA5: 0689E440,045D59B0,045D59B1,045D59B2,045D59B3,00000000 */
+CPU3: 0x000005A5  +0 () - /* BEA5: 0689E444,045D59B4,045D59B5,045D59B6,045D59B7,00000000 */
+CPU3: 0x000005A6  +0 () - /* BEA5: 0689E448,045D59B8,045D59B9,045D59BA,003C2334,00000000 */
+CPU3: 0x000005A7  +0 () - /* BEA5: 0689E44C,0440AB13,0440AB14,0440AB15,003ADB1F,00000000 */
+CPU3: 0x000005A8 ftl/ftl_spor.c +10878 ftl_save_fake_qbt() - [IN] ftl_save_fake_qbt
+CPU3: 0x000005A9 ftl/ftl_spor.c +10897 ftl_save_fake_qbt() - spor delay flush qbt, gFtlMgr.SerialNumb
+er :0xb47b
+
+
+CPU3: 0x000005AA ftl/ftl_spor.c +2365 ftl_spor_resource_recycle() - [IN] ftl_spor_resource_recycle
+CPU3: 0x000005AB ftl/ftl_spor.c +2406 ftl_spor_error_save_log() - SPOR save log 0 0 1 0
+CPU3: 0x000005AC [evt by cpu3] SPOR unexpected error

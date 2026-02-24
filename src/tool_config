@@ -1,0 +1,12 @@
+#!/bin/bash
+echo "======================================================================"
+echo "\"tool_config\" start"
+git submodule init
+git submodule update
+fw_creator=${PWD}/"scripts/shared_tool/img_builder/img_builder.py"
+fw_config=${PWD}/"scripts/shared_tool/img_builder/fwconfig_gui.py"
+set_ddr_config=${PWD}/"scripts/shared_tool/img_builder/set_ddr_config.py"
+echo "fw_creator: $fw_creator"
+echo "fw_config: $fw_config"
+echo "set_ddr_config: $set_ddr_config"
+echo "======================================================================"
