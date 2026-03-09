@@ -1,3 +1,0 @@
-[submodule "scripts/shared_tool"]
-	path = scripts/shared_tool
-	url = ssh://10.10.0.16:29418/shared_tool

@@ -1,9 +1,0 @@
-#!/bin/bash
-echo "==================================================="
-echo "\"Secure_loader_ver\" start"
-    loader="LJ1_LDR.elf"
-    Sloader="LJ1_LDR.elf"
-
-echo "loader: $loader"
-echo "Sloader: $Sloader"
-echo "==================================================="
