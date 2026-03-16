@@ -1,0 +1,11 @@
+{
+  "context_lines": 300,
+
+  "keywords": [
+    {
+      "type": "error",
+      "enabled": true,
+      "keyword": "evt by cpu"
+    }
+  ]
+}

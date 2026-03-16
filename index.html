@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SSD Log AI Analyzer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 24px;
+      background: #f6f7fb;
+      color: #222;
+    }
+    .card {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 28px;
+    }
+    .top-actions {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .top-link {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 8px;
+      background: #374151;
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .row label {
+      font-weight: 600;
+    }
+    input[type="text"], select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cfd3dc;
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    textarea {
+      min-height: 180px;
+      resize: vertical;
+      font-family: Consolas, monospace;
+    }
+    .inline {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .actions {
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #9fb5ef;
+      cursor: not-allowed;
+    }
+    .hint {
+      color: #666;
+      font-size: 13px;
+    }
+    .result {
+      margin-top: 24px;
+    }
+    pre {
+      background: #111827;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 10px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .status {
+      margin-top: 8px;
+      font-size: 14px;
+    }
+    .ok { color: #15803d; }
+    .err { color: #b91c1c; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>SSD Log AI Analyzer</h1>
+    <p class="hint">桌機端執行 AI 分析，支援原始 log 資料夾與已處理 log 檔案。</p>
+
+    <div class="top-actions">
+      <a class="top-link" href="/dataset">Open Dataset Manager</a>
+    </div>
+
+    <div class="row">
+      <label>輸入模式</label>
+      <div class="inline">
+        <label><input type="radio" name="mode" value="raw_folder" checked> Raw Log Folder</label>
+        <label><input type="radio" name="mode" value="parsed_file"> Parsed Log File</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <label for="serial">Serial Number</label>
+      <input id="serial" type="text" placeholder="例如 SN2560YYRZ2NCKJ" />
+    </div>
+
+    <div class="row">
+      <label for="issue">Customer Issue</label>
+      <input id="issue" type="text" placeholder="例如 drive not detected after power cycle" />
+    </div>
+
+    <div class="row">
+      <label for="model">Model</label>
+      <input id="model" type="text" placeholder="例如 PJ1 / CX3 / ER3" />
+    </div>
+
+    <div class="row">
+      <label for="fw">FW Version</label>
+      <input id="fw" type="text" placeholder="例如 FG2N9031" />
+    </div>
+
+    <div class="row" id="rawRow">
+      <label for="rawFiles">Raw Log Folder</label>
+      <div>
+        <input id="rawFiles" type="file" webkitdirectory directory multiple />
+        <div class="hint">請直接選擇資料夾。</div>
+      </div>
+    </div>
+
+    <div class="row" id="parsedRow" style="display:none;">
+      <label for="parsedFile">Parsed Log File</label>
+      <div>
+        <input id="parsedFile" type="file" />
+        <div class="hint">請選擇已處理過的 cleaned log 檔案。</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <label for="saveToDb">Save to DB</label>
+      <div>
+        <label><input id="saveToDb" type="checkbox" /> 儲存此次分析結果到資料庫</label>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="analyzeBtn">Analyze</button>
+      <span id="status" class="status"></span>
+    </div>
+
+    <div class="result">
+      <h3>Analysis Result</h3>
+      <pre id="resultBox">尚未分析</pre>
+    </div>
+  </div>
+
+  <script>
+    const modeRadios = document.querySelectorAll('input[name="mode"]');
+    const rawRow = document.getElementById("rawRow");
+    const parsedRow = document.getElementById("parsedRow");
+    const analyzeBtn = document.getElementById("analyzeBtn");
+    const statusEl = document.getElementById("status");
+    const resultBox = document.getElementById("resultBox");
+
+    function getMode() {
+      return [...modeRadios].find(r => r.checked).value;
+    }
+
+    function refreshModeUI() {
+      const mode = getMode();
+      rawRow.style.display = mode === "raw_folder" ? "grid" : "none";
+      parsedRow.style.display = mode === "parsed_file" ? "grid" : "none";
+    }
+
+    modeRadios.forEach(r => r.addEventListener("change", refreshModeUI));
+    refreshModeUI();
+
+    analyzeBtn.addEventListener("click", async () => {
+      const serial = document.getElementById("serial").value.trim();
+      const issue = document.getElementById("issue").value.trim();
+      const model = document.getElementById("model").value.trim();
+      const fw = document.getElementById("fw").value.trim();
+      const saveToDb = document.getElementById("saveToDb").checked;
+      const mode = getMode();
+
+      if (!serial || !issue || !model) {
+        alert("請填寫 Serial Number / Customer Issue / Model");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("mode", mode);
+      formData.append("serial", serial);
+      formData.append("issue", issue);
+      formData.append("model", model);
+      formData.append("fw_version", fw);
+      formData.append("save_to_db", saveToDb ? "true" : "false");
+
+      if (mode === "raw_folder") {
+        const files = document.getElementById("rawFiles").files;
+        if (!files || files.length === 0) {
+          alert("請選擇 raw log 資料夾");
+          return;
+        }
+        for (const f of files) {
+          formData.append("log_files", f);
+        }
+      } else {
+        const file = document.getElementById("parsedFile").files[0];
+        if (!file) {
+          alert("請選擇 parsed log file");
+          return;
+        }
+        formData.append("cleaned_file", file);
+      }
+
+      analyzeBtn.disabled = true;
+      statusEl.textContent = "分析中：準備送出...";
+      statusEl.className = "status";
+      resultBox.textContent = "處理中，請稍候...";
+
+      const progressTimer = setInterval(async () => {
+        try {
+          const pResp = await fetch(`${window.location.origin}/progress`);
+          const pData = await pResp.json();
+
+          if (pData.stage) {
+            statusEl.textContent = "分析中：" + pData.stage;
+          }
+        } catch (e) {
+          // ignore progress polling errors
+        }
+      }, 1000);
+
+      try {
+        const resp = await fetch(`${window.location.origin}/analyze`, {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await resp.json();
+
+        if (!data.ok) {
+          statusEl.textContent = "分析失敗";
+          statusEl.className = "status err";
+          resultBox.textContent = data.error || JSON.stringify(data, null, 2);
+          return;
+        }
+
+        statusEl.textContent =
+          `完成 | mode=${data.mode} | token=${data.token_count}` +
+          (data.db_action ? ` | DB=${data.db_action} case_id=${data.case_id}` : "");
+        statusEl.className = "status ok";
+        resultBox.textContent = data.llm_output;
+
+      } catch (e) {
+        statusEl.textContent = "連線失敗";
+        statusEl.className = "status err";
+        resultBox.textContent = String(e);
+      } finally {
+        clearInterval(progressTimer);
+        analyzeBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

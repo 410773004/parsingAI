@@ -18,7 +18,7 @@ import prompts
 # DB
 # =============================
 
-DB_PATH = Path("data/fa_dataset.db")
+DB_PATH = Path("../data/fa_dataset.db")
 
 SCHEMA_SQL = """
 CREATE TABLE IF NOT EXISTS cases (

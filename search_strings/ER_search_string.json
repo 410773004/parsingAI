@@ -1,0 +1,12 @@
+{
+  "path_file_dir": "",
+  "file_name": [],
+  "keywords": [
+    {
+      "type": "error",
+      "enabled": true,
+      "keyword": "Trigger Savelog",
+      "lines_to_capture": 20
+    }
+  ]
+}

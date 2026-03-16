@@ -100,44 +100,16 @@ def add_case_manual():
 # =====================
 # List
 # =====================
-def list_cases():
+def list_cases(limit: int = 50):
     conn = connect()
 
     rows = conn.execute(
         """
-        SELECT case_id, serial, model, fw_version, updated_at
+        SELECT case_id, serial, model, fw_version,
+               created_at, updated_at
         FROM cases
-        ORDER BY updated_at DESC
-        """
-    ).fetchall()
-
-    conn.close()
-
-    if not rows:
-        print("No cases")
-        return
-
-    for r in rows:
-        print(f"{r[0]} | SN:{r[1]} | {r[2]} | FW:{r[3]} | {r[4]}")
-
-
-# =====================
-# View
-# =====================
-def view_cases(limit: int = 50):
-
-    conn = connect()
-
-    rows = conn.execute(
-        """
-        SELECT case_id,
-               serial,
-               model,
-               fw_version,
-               created_at,
-               updated_at
-        FROM cases
-        ORDER BY case_id ASC LIMIT ?
+        ORDER BY case_id ASC
+        LIMIT ?
         """,
         (limit,)
     ).fetchall()
@@ -148,12 +120,61 @@ def view_cases(limit: int = 50):
         print("No cases")
         return
 
-    print("\n=== Recent Cases ===\n")
+    print("\n=== Cases ===\n")
 
     for r in rows:
         print(
             f"case_id:{r[0]} | SN:{r[1]} | Model:{r[2]} | FW:{r[3]} | Updated:{r[5]}"
         )
+
+
+# =====================
+# View
+# =====================
+def view_case():
+    cid = input("case_id: ").strip()
+
+    if not cid.isdigit():
+        print("case_id must be a number")
+        return
+
+    conn = connect()
+
+    row = conn.execute(
+        """
+        SELECT case_id, serial, model, fw_version,
+               cleaned_log, llm_output, ground_truth,
+               created_at, updated_at
+        FROM cases
+        WHERE case_id=?
+        """,
+        (cid,)
+    ).fetchone()
+
+    conn.close()
+
+    if not row:
+        print("Case not found")
+        return
+
+    print("\n==============================")
+    print(f"case_id    : {row[0]}")
+    print(f"serial     : {row[1]}")
+    print(f"model      : {row[2]}")
+    print(f"fw_version : {row[3]}")
+    print(f"created_at : {row[7]}")
+    print(f"updated_at : {row[8]}")
+    print("==============================\n")
+
+    print("=== CLEANED LOG ===\n")
+    print(row[4] if row[4] else "(empty)")
+
+    print("\n=== LLM OUTPUT ===\n")
+    print(row[5] if row[5] else "(empty)")
+
+    print("\n=== GROUND TRUTH ===\n")
+    print(row[6] if row[6] else "(empty)")
+    print("\n==============================\n")
 
 
 # =====================
@@ -230,8 +251,8 @@ def main():
     while True:
         print("\n=== Dataset Tool ===")
         print("1) Add one case manually")
-        print("2) List cases")
-        print("3) View case (50)")
+        print("2) List cases (50)")
+        print("3) View case details")
         print("4) Edit case")
         print("5) Delete case")
         print("0) Exit")
@@ -243,7 +264,7 @@ def main():
         elif c == "2":
             list_cases()
         elif c == "3":
-            view_cases()
+            view_case()
         elif c == "4":
             edit_case()
         elif c == "5":

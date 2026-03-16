@@ -1,0 +1,56 @@
+<h1>Dataset</h1>
+
+<a href="/dataset/new">Add Case</a>
+
+<table border="1" cellpadding="8">
+
+<tr>
+<th>ID</th>
+<th>Serial</th>
+<th>Model</th>
+<th>FW</th>
+<th>Updated</th>
+<th>Action</th>
+</tr>
+
+{% for c in cases %}
+
+<tr>
+
+<td>{{c[0]}}</td>
+<td>{{c[1]}}</td>
+<td>{{c[2]}}</td>
+<td>{{c[3]}}</td>
+<td>{{c[4]}}</td>
+
+<td>
+
+<a href="/dataset/{{c[0]}}">View</a>
+|
+<a href="/dataset/{{c[0]}}/edit">Edit</a>
+|
+<a href="#" onclick="deleteCase({{c[0]}}); return false;">Delete</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<script>
+function deleteCase(id) {
+
+    if (!confirm("Delete this case?")) {
+        return;
+    }
+
+    fetch("/dataset/" + id + "/delete", {
+        method: "POST"
+    }).then(function() {
+        location.reload();
+    });
+
+}
+</script>
