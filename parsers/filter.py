@@ -15,6 +15,11 @@ PGR_RE = re.compile(r"PGR Ver\s*:\s*(\S+)")
 LDR_RE = re.compile(r"Loader Ver\s*:\s*(\S+)")
 NAND_RE = re.compile(r"(\d+CH\*\d+CE\*\d+LUN\*\d+PL)")
 
+IGNORE_EVENT_SIGNATURES = {
+    "pcie link error",
+    "plp handle finished",
+}
+
 
 def remove_timestamp(lines):
     out = []
@@ -109,11 +114,18 @@ def get_event_signature(block):
     return block[-1].strip() if block else "unknown event"
 
 
+def should_ignore_signature(sig: str) -> bool:
+    return sig.strip().lower() in IGNORE_EVENT_SIGNATURES
+
+
 def cluster_event_blocks(blocks):
     clusters = {}
 
     for block in blocks:
         sig = get_event_signature(block)
+
+        if should_ignore_signature(sig):
+            continue
 
         if sig not in clusters:
             clusters[sig] = {
@@ -210,20 +222,5 @@ def run_filter(settings, log_folder):
     for sig, info in sorted_clusters:
         out.append(f"{sig} : {info['count']}")
     out.append("")
-
-    out.append(sep)
-    out.append("EVENT DETAIL")
-    out.append(sep)
-
-    for sig, info in sorted_clusters:
-        out.append(sub_sep)
-        out.append(f"EVENT : {sig}")
-        out.append(f"COUNT : {info['count']}")
-        out.append(sub_sep)
-
-        for line in info["sample"]:
-            out.append(line)
-
-        out.append("")
 
     return "\n".join(out)

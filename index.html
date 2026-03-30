@@ -12,7 +12,7 @@
       color: #222;
     }
     .card {
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
       background: white;
       border-radius: 12px;
@@ -42,30 +42,20 @@
       display: grid;
       grid-template-columns: 180px 1fr;
       gap: 12px;
-      align-items: center;
+      align-items: start;
       margin-bottom: 14px;
     }
     .row label {
       font-weight: 600;
+      padding-top: 10px;
     }
-    input[type="text"], select, textarea {
+    input[type="text"], select {
       width: 100%;
       padding: 10px 12px;
       border: 1px solid #cfd3dc;
       border-radius: 8px;
       font-size: 14px;
       box-sizing: border-box;
-    }
-    textarea {
-      min-height: 180px;
-      resize: vertical;
-      font-family: Consolas, monospace;
-    }
-    .inline {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      flex-wrap: wrap;
     }
     .actions {
       margin-top: 20px;
@@ -78,6 +68,7 @@
       color: white;
       font-size: 14px;
       cursor: pointer;
+      margin-right: 8px;
     }
     button:disabled {
       background: #9fb5ef;
@@ -105,58 +96,115 @@
     }
     .ok { color: #15803d; }
     .err { color: #b91c1c; }
+
+    .dropzone {
+      border: 2px dashed #9ca3af;
+      border-radius: 12px;
+      padding: 24px;
+      background: #f9fafb;
+      text-align: center;
+      transition: 0.2s ease;
+    }
+    .dropzone.dragover {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+    .folder-list {
+      margin-top: 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 12px;
+      background: #fafafa;
+      max-height: 220px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+    .folder-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .folder-item:last-child {
+      border-bottom: none;
+    }
+    .progress-wrap {
+      margin-top: 12px;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 16px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #2563eb;
+      transition: width 0.2s ease;
+    }
+    .progress-text {
+      margin-top: 6px;
+      font-size: 13px;
+      color: #444;
+    }
   </style>
 </head>
 <body>
   <div class="card">
     <h1>SSD Log AI Analyzer</h1>
-    <p class="hint">桌機端執行 AI 分析，支援原始 log 資料夾與已處理 log 檔案。</p>
+    <p class="hint">支援一次加入多個 Raw Log Folder，並顯示上傳進度與分析進度。</p>
 
     <div class="top-actions">
       <a class="top-link" href="/dataset">Open Dataset Manager</a>
     </div>
 
     <div class="row">
-      <label>輸入模式</label>
-      <div class="inline">
-        <label><input type="radio" name="mode" value="raw_folder" checked> Raw Log Folder</label>
-        <label><input type="radio" name="mode" value="parsed_file"> Parsed Log File</label>
-      </div>
-    </div>
-
-    <div class="row">
-      <label for="serial">Serial Number</label>
-      <input id="serial" type="text" placeholder="例如 SN2560YYRZ2NCKJ" />
-    </div>
-
-    <div class="row">
       <label for="issue">Customer Issue</label>
-      <input id="issue" type="text" placeholder="例如 drive not detected after power cycle" />
-    </div>
-
-    <div class="row">
-      <label for="model">Model</label>
-      <input id="model" type="text" placeholder="例如 PJ1 / CX3 / ER3" />
-    </div>
-
-    <div class="row">
-      <label for="fw">FW Version</label>
-      <input id="fw" type="text" placeholder="例如 FG2N9031" />
-    </div>
-
-    <div class="row" id="rawRow">
-      <label for="rawFiles">Raw Log Folder</label>
       <div>
-        <input id="rawFiles" type="file" webkitdirectory directory multiple />
-        <div class="hint">請直接選擇資料夾。</div>
+        <select id="issue">
+          <option value="">請選擇</option>
+          <option value="media error">media error</option>
+          <option value="i/o error">i/o error</option>
+          <option value="timeout">timeout</option>
+          <option value="drive not detected">drive not detected</option>
+          <option value="performance drop">performance drop</option>
+          <option value="__OTHER__">Other</option>
+        </select>
+        <div class="hint">若沒有符合項目，請選擇 Other。</div>
       </div>
     </div>
 
-    <div class="row" id="parsedRow" style="display:none;">
-      <label for="parsedFile">Parsed Log File</label>
+    <div class="row" id="issueOtherRow" style="display:none;">
+      <label for="issueOther">Other Issue</label>
+      <input id="issueOther" type="text" placeholder="例如 drive not detected after power cycle" />
+    </div>
+
+    <div class="row">
+      <label>Raw Log Folders</label>
       <div>
-        <input id="parsedFile" type="file" />
-        <div class="hint">請選擇已處理過的 cleaned log 檔案。</div>
+        <div id="dropzone" class="dropzone">
+          <div>拖曳一個或多個資料夾到這裡</div>
+          <div class="hint" style="margin-top:8px;">
+            或按 Add Folder，一個一個加入待上傳清單，再一次 Analyze
+          </div>
+          <div style="margin-top:12px;">
+            <button type="button" id="addFolderBtn">Add Folder</button>
+            <button type="button" id="clearFoldersBtn">Clear</button>
+            <input id="folderPicker" type="file" webkitdirectory directory multiple style="display:none;" />
+          </div>
+        </div>
+
+        <div id="folderList" class="folder-list">尚未加入任何資料夾</div>
+
+        <div class="progress-wrap">
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+          <div id="progressText" class="progress-text">0%</div>
+        </div>
       </div>
     </div>
 
@@ -179,90 +227,212 @@
   </div>
 
   <script>
-    const modeRadios = document.querySelectorAll('input[name="mode"]');
-    const rawRow = document.getElementById("rawRow");
-    const parsedRow = document.getElementById("parsedRow");
+    const issueEl = document.getElementById("issue");
+    const issueOtherRow = document.getElementById("issueOtherRow");
+    const issueOtherEl = document.getElementById("issueOther");
     const analyzeBtn = document.getElementById("analyzeBtn");
     const statusEl = document.getElementById("status");
     const resultBox = document.getElementById("resultBox");
+    const dropzone = document.getElementById("dropzone");
+    const addFolderBtn = document.getElementById("addFolderBtn");
+    const clearFoldersBtn = document.getElementById("clearFoldersBtn");
+    const folderPicker = document.getElementById("folderPicker");
+    const folderList = document.getElementById("folderList");
+    const progressFill = document.getElementById("progressFill");
+    const progressText = document.getElementById("progressText");
 
-    function getMode() {
-      return [...modeRadios].find(r => r.checked).value;
+    let selectedFiles = [];
+    let folderNameSet = new Set();
+
+    function refreshIssueUI() {
+      issueOtherRow.style.display = issueEl.value === "__OTHER__" ? "grid" : "none";
+      if (issueEl.value !== "__OTHER__") {
+        issueOtherEl.value = "";
+      }
     }
 
-    function refreshModeUI() {
-      const mode = getMode();
-      rawRow.style.display = mode === "raw_folder" ? "grid" : "none";
-      parsedRow.style.display = mode === "parsed_file" ? "grid" : "none";
+    issueEl.addEventListener("change", refreshIssueUI);
+    refreshIssueUI();
+
+    function updateFolderList() {
+      if (selectedFiles.length === 0) {
+        folderList.innerHTML = "尚未加入任何資料夾";
+        return;
+      }
+
+      const folderMap = new Map();
+      for (const file of selectedFiles) {
+        const rel = file.webkitRelativePath || file.name;
+        const top = rel.split("/")[0] || "(unknown)";
+        folderMap.set(top, (folderMap.get(top) || 0) + 1);
+      }
+
+      const html = [];
+      for (const [name, count] of folderMap.entries()) {
+        html.push(`
+          <div class="folder-item">
+            <span>${name}</span>
+            <span>${count} files</span>
+          </div>
+        `);
+      }
+      folderList.innerHTML = html.join("");
     }
 
-    modeRadios.forEach(r => r.addEventListener("change", refreshModeUI));
-    refreshModeUI();
+    function addFiles(files) {
+      for (const file of files) {
+        const rel = file.webkitRelativePath || file.name;
+        const top = rel.split("/")[0] || "";
+
+        if (!top) continue;
+
+        // 同一資料夾只加一次整包
+        const key = `${top}::${file.name}::${file.size}`;
+        selectedFiles.push(file);
+        folderNameSet.add(top);
+      }
+      updateFolderList();
+    }
+
+    addFolderBtn.addEventListener("click", () => {
+      folderPicker.click();
+    });
+
+    folderPicker.addEventListener("change", (e) => {
+      addFiles(Array.from(e.target.files || []));
+      folderPicker.value = "";
+    });
+
+    clearFoldersBtn.addEventListener("click", () => {
+      selectedFiles = [];
+      folderNameSet.clear();
+      updateFolderList();
+      progressFill.style.width = "0%";
+      progressText.textContent = "0%";
+    });
+
+    dropzone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dropzone.classList.add("dragover");
+    });
+
+    dropzone.addEventListener("dragleave", () => {
+      dropzone.classList.remove("dragover");
+    });
+
+    dropzone.addEventListener("drop", async (e) => {
+      e.preventDefault();
+      dropzone.classList.remove("dragover");
+
+      const items = Array.from(e.dataTransfer.items || []);
+      const allFiles = [];
+
+      async function walkEntry(entry, path = "") {
+        return new Promise((resolve) => {
+          if (entry.isFile) {
+            entry.file((file) => {
+              Object.defineProperty(file, "webkitRelativePath", {
+                value: path + file.name,
+                configurable: true
+              });
+              allFiles.push(file);
+              resolve();
+            });
+          } else if (entry.isDirectory) {
+            const reader = entry.createReader();
+            reader.readEntries(async (entries) => {
+              for (const ent of entries) {
+                await walkEntry(ent, path + entry.name + "/");
+              }
+              resolve();
+            });
+          } else {
+            resolve();
+          }
+        });
+      }
+
+      for (const item of items) {
+        const entry = item.webkitGetAsEntry ? item.webkitGetAsEntry() : null;
+        if (entry) {
+          await walkEntry(entry, "");
+        }
+      }
+
+      addFiles(allFiles);
+    });
 
     analyzeBtn.addEventListener("click", async () => {
-      const serial = document.getElementById("serial").value.trim();
-      const issue = document.getElementById("issue").value.trim();
-      const model = document.getElementById("model").value.trim();
-      const fw = document.getElementById("fw").value.trim();
+      const issue = issueEl.value;
+      const issueOther = issueOtherEl.value.trim();
       const saveToDb = document.getElementById("saveToDb").checked;
-      const mode = getMode();
 
-      if (!serial || !issue || !model) {
-        alert("請填寫 Serial Number / Customer Issue / Model");
+      if (!issue) {
+        alert("請選擇 Customer Issue");
+        return;
+      }
+
+      if (issue === "__OTHER__" && !issueOther) {
+        alert("請填寫 Other Issue");
+        return;
+      }
+
+      if (selectedFiles.length === 0) {
+        alert("請先加入至少一個 Raw Log Folder");
         return;
       }
 
       const formData = new FormData();
-      formData.append("mode", mode);
-      formData.append("serial", serial);
       formData.append("issue", issue);
-      formData.append("model", model);
-      formData.append("fw_version", fw);
+      formData.append("issue_other", issueOther);
       formData.append("save_to_db", saveToDb ? "true" : "false");
+      formData.append("folder_names", Array.from(folderNameSet).join("||"));
 
-      if (mode === "raw_folder") {
-        const files = document.getElementById("rawFiles").files;
-        if (!files || files.length === 0) {
-          alert("請選擇 raw log 資料夾");
-          return;
-        }
-        for (const f of files) {
-          formData.append("log_files", f);
-        }
-      } else {
-        const file = document.getElementById("parsedFile").files[0];
-        if (!file) {
-          alert("請選擇 parsed log file");
-          return;
-        }
-        formData.append("cleaned_file", file);
+      for (const f of selectedFiles) {
+        formData.append("log_files", f);
       }
 
       analyzeBtn.disabled = true;
-      statusEl.textContent = "分析中：準備送出...";
+      statusEl.textContent = "上傳中...";
       statusEl.className = "status";
       resultBox.textContent = "處理中，請稍候...";
+      progressFill.style.width = "0%";
+      progressText.textContent = "0%";
 
       const progressTimer = setInterval(async () => {
         try {
           const pResp = await fetch(`${window.location.origin}/progress`);
           const pData = await pResp.json();
-
           if (pData.stage) {
             statusEl.textContent = "分析中：" + pData.stage;
           }
-        } catch (e) {
-          // ignore progress polling errors
-        }
+        } catch (e) {}
       }, 1000);
 
       try {
-        const resp = await fetch(`${window.location.origin}/analyze`, {
-          method: "POST",
-          body: formData
-        });
+        const data = await new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", `${window.location.origin}/analyze`);
 
-        const data = await resp.json();
+          xhr.upload.onprogress = (e) => {
+            if (e.lengthComputable) {
+              const percent = Math.round((e.loaded / e.total) * 100);
+              progressFill.style.width = percent + "%";
+              progressText.textContent = percent + "%";
+            }
+          };
+
+          xhr.onload = () => {
+            try {
+              resolve(JSON.parse(xhr.responseText));
+            } catch (err) {
+              reject(err);
+            }
+          };
+
+          xhr.onerror = () => reject(new Error("upload failed"));
+          xhr.send(formData);
+        });
 
         if (!data.ok) {
           statusEl.textContent = "分析失敗";
@@ -271,8 +441,11 @@
           return;
         }
 
+        progressFill.style.width = "100%";
+        progressText.textContent = "100%";
+
         statusEl.textContent =
-          `完成 | mode=${data.mode} | token=${data.token_count}` +
+          `完成 | token=${data.token_count}` +
           (data.db_action ? ` | DB=${data.db_action} case_id=${data.case_id}` : "");
         statusEl.className = "status ok";
         resultBox.textContent = data.llm_output;

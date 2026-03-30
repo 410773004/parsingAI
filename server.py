@@ -9,15 +9,20 @@ from typing import Optional
 
 import ollama
 from fastapi import FastAPI, UploadFile, File, Form, Request
+from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
 import config
 import prompts
-from parsers import parse_pj, parse_er
-from fastapi.concurrency import run_in_threadpool
-
+from event_flow import analyze_event_flow
+from parsers.project_parser import (
+    parse as parse_project,
+    detect_project_from_raw_logs,
+    extract_metadata_from_raw_logs,
+    build_temperature_section,
+)
 
 app = FastAPI(title="ParsingAI Server")
 
@@ -29,7 +34,6 @@ current_stage = "idle"
 
 class AnalyzeResponse(BaseModel):
     ok: bool
-    mode: str
     token_count: int
     llm_output: str
     db_action: Optional[str] = None
@@ -53,6 +57,7 @@ def connect_db() -> sqlite3.Connection:
     return conn
 
 
+
 def init_db() -> None:
     conn = connect_db()
 
@@ -63,6 +68,7 @@ def init_db() -> None:
             serial TEXT UNIQUE,
             model TEXT,
             fw_version TEXT,
+            issue TEXT,
             cleaned_log TEXT,
             llm_output TEXT,
             ground_truth TEXT,
@@ -71,28 +77,36 @@ def init_db() -> None:
         );
         """
     )
-
+    try:
+        conn.execute("ALTER TABLE cases ADD COLUMN issue TEXT")
+    except Exception:
+        pass  # 已經有就忽略
     conn.commit()
     conn.close()
 
+def load_smart_info(folder: str | Path) -> str:
+    folder = Path(folder)
+
+    for f in folder.glob("smart_info.txt"):
+        try:
+            content = f.read_text(encoding="utf-8", errors="ignore").strip()
+            if not content:
+                return ""
+
+            return (
+                "================================================================================\n"
+                "SMART INFO\n"
+                "================================================================================\n"
+                f"{content}\n"
+            )
+        except Exception:
+            continue
+
+    return ""
 
 @app.on_event("startup")
 def startup_event() -> None:
     init_db()
-
-
-def detect_product_from_fw(fw: str) -> str:
-    fw = (fw or "").strip()
-
-    if len(fw) < 2:
-        return "PJ"
-
-    prefix = fw[:2]
-
-    if prefix.isalpha():
-        return "PJ"
-
-    return "ER"
 
 
 def count_tokens(text: str) -> int:
@@ -104,9 +118,9 @@ def count_tokens(text: str) -> int:
         return max(1, len(text) // 4)
 
 
-def run_llm(cleaned: str, model: str, fw_version: str, issue: str) -> str:
+def run_llm(cleaned: str, project: str, fw_version: str, issue: str) -> str:
     user_prompt = prompts.USER_TEMPLATE.format(
-        model=model,
+        model=project,
         fw_version=fw_version,
         issue=issue,
         log_text=cleaned,
@@ -130,6 +144,7 @@ def upsert_case_to_db(
     serial: str,
     model: str,
     fw_version: str,
+    issue: str,
     cleaned_log: str,
     llm_output: str,
 ) -> tuple[str, int]:
@@ -145,16 +160,17 @@ def upsert_case_to_db(
         conn.execute(
             """
             INSERT INTO cases(
-                serial, model, fw_version,
+                serial, model, fw_version,issue,
                 cleaned_log, llm_output, ground_truth,
                 created_at, updated_at
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)
             """,
             (
                 serial,
                 model,
                 fw_version,
+                issue,
                 cleaned_log,
                 llm_output,
                 "",
@@ -175,6 +191,7 @@ def upsert_case_to_db(
         UPDATE cases
         SET model=?,
             fw_version=?,
+            issue=?,
             cleaned_log=?,
             llm_output=?,
             updated_at=?
@@ -183,6 +200,7 @@ def upsert_case_to_db(
         (
             model,
             fw_version,
+            issue,
             cleaned_log,
             llm_output,
             now,
@@ -212,119 +230,150 @@ def progress():
 
 @app.post("/analyze", response_model=AnalyzeResponse)
 async def analyze(
-    mode: str = Form(...),
-    serial: str = Form(...),
     issue: str = Form(...),
-    model: str = Form(...),
-    fw_version: str = Form(""),
+    issue_other: str = Form(""),
+    folder_names: str = Form(""),
     save_to_db: bool = Form(False),
     log_files: list[UploadFile] | None = File(None),
-    cleaned_file: UploadFile | None = File(None),
 ) -> AnalyzeResponse:
-
     temp_dir: Path | None = None
 
     try:
         set_stage("收到請求")
 
-        if not serial.strip():
-            return AnalyzeResponse(ok=False, mode=mode, token_count=0, llm_output="", error="serial required")
+        final_issue = issue_other.strip() if issue == "__OTHER__" else issue.strip()
 
-        if not issue.strip():
-            return AnalyzeResponse(ok=False, mode=mode, token_count=0, llm_output="", error="issue required")
+        if not log_files:
+            return AnalyzeResponse(
+                ok=False,
+                token_count=0,
+                llm_output="",
+                error="log_files required",
+            )
 
-        if not model.strip():
-            return AnalyzeResponse(ok=False, mode=mode, token_count=0, llm_output="", error="model required")
+        temp_dir = Path(tempfile.mkdtemp())
+        valid_count = 0
 
-        if not fw_version.strip():
-            return AnalyzeResponse(ok=False, mode=mode, token_count=0, llm_output="", error="fw_version required")
+        for f in log_files:
+            fname = Path(f.filename or "").name
+            lower_name = fname.lower()
 
-        if mode == "raw_folder":
-            set_stage("讀取 log files")
+            is_valid_log = (
+                lower_name.endswith(".log")
+                and (
+                    lower_name.startswith("hs")
+                    or "norlog" in lower_name
+                    or "lognor" in lower_name
+                )
+            )
 
-            if not log_files:
-                return AnalyzeResponse(ok=False, mode=mode, token_count=0, llm_output="", error="log_files required")
+            is_smart_info = lower_name == "smart_info.txt"
 
-            temp_dir = Path(tempfile.mkdtemp())
-            valid_count = 0
+            if not (is_valid_log or is_smart_info):
+                continue
 
-            for f in log_files:
-                fname = Path(f.filename or "").name
-                lower_name = fname.lower()
+            data = await f.read()
+            (temp_dir / fname).write_bytes(data)
 
-                if not (
-                    lower_name.endswith(".log")
-                    and(
-                        lower_name.startswith("hs")
-                        or "norlog" in lower_name
-                        or "lognor" in lower_name
-                    )
-                ):
-                    continue
-
-                data = await f.read()
-                (temp_dir / fname).write_bytes(data)
+            if is_valid_log:
                 valid_count += 1
 
-            if valid_count == 0:
-                return AnalyzeResponse(
-                    ok=False,
-                    mode=mode,
-                    token_count=0,
-                    llm_output="",
-                    error="no Hs*.log or norlog.log found",
+        if valid_count == 0:
+            return AnalyzeResponse(
+                ok=False,
+                token_count=0,
+                llm_output="",
+                error="no valid log found",
+            )
+
+        set_stage("快速判斷 project")
+        project = await run_in_threadpool(detect_project_from_raw_logs, temp_dir)
+
+        if not project:
+            return AnalyzeResponse(
+                ok=False,
+                token_count=0,
+                llm_output="",
+                error="cannot detect project from raw logs",
+            )
+
+        set_stage("執行 parser")
+        cleaned = await run_in_threadpool(parse_project, project, temp_dir)
+
+        set_stage("分析 Event Flow")
+        flow_block = await run_in_threadpool(analyze_event_flow, temp_dir)
+
+        set_stage("分析 Temperature")
+        temperature_section = await run_in_threadpool(build_temperature_section, temp_dir)
+
+        extra_sections = []
+
+        if temperature_section:
+            extra_sections.append(temperature_section)
+
+        if flow_block:
+            extra_sections.append(flow_block)
+
+        if extra_sections:
+            insert_block = "\n\n".join(extra_sections)
+
+            event_detail_header = (
+                "================================================================================\n"
+                "EVENT DETAIL\n"
+                "================================================================================"
+            )
+
+            if event_detail_header in cleaned:
+                cleaned = cleaned.replace(
+                    event_detail_header,
+                    f"{insert_block}\n\n{event_detail_header}",
+                    1,
                 )
-
-            product = detect_product_from_fw(fw_version)
-
-            set_stage("執行 parser")
-
-            if product == "PJ":
-                cleaned = await run_in_threadpool(parse_pj, temp_dir)
             else:
-                cleaned = await run_in_threadpool(parse_er, temp_dir)
+                cleaned = cleaned + "\n\n" + insert_block
 
-        elif mode == "parsed_file":
-            set_stage("讀取 cleaned log")
-
-            if cleaned_file is None:
-                return AnalyzeResponse(ok=False, mode=mode, token_count=0, llm_output="", error="cleaned_file required")
-
-            raw = await cleaned_file.read()
-            cleaned = raw.decode("utf-8", errors="ignore")
-
-        else:
-            return AnalyzeResponse(ok=False, mode=mode, token_count=0, llm_output="", error="invalid mode")
+        set_stage("抽取 raw metadata")
+        primary_folder = folder_names.split("||")[0].strip() if folder_names else ""
+        meta = await run_in_threadpool(extract_metadata_from_raw_logs, temp_dir, primary_folder)
+        project = meta.get("project", "") or project
+        fw_version = meta.get("fw_version", "")
+        serial = meta.get("serial", "")
 
         if not cleaned.strip():
-            return AnalyzeResponse(ok=False, mode=mode, token_count=0, llm_output="", error="cleaned log empty")
+            return AnalyzeResponse(
+                ok=False,
+                token_count=0,
+                llm_output="",
+                error="cleaned log empty",
+            )
 
         set_stage("計算 token")
         tok = await run_in_threadpool(count_tokens, cleaned)
-        print("CLEANED TOKENS:", tok)
 
         set_stage("LLM 分析")
-        reply = await run_in_threadpool(run_llm, cleaned, model, fw_version, issue)
+        reply = await run_in_threadpool(run_llm, cleaned, project, fw_version, final_issue)
 
         db_action = None
         case_id = None
 
         if save_to_db:
             set_stage("儲存資料庫")
+            print("DB save values:", serial, project, fw_version, final_issue)
             db_action, case_id = await run_in_threadpool(
                 upsert_case_to_db,
                 serial,
-                model,
+                project,
                 fw_version,
+                final_issue,
                 cleaned,
                 reply,
             )
+            print("db_action:", db_action, "case_id:", case_id)
 
         set_stage("完成")
 
         return AnalyzeResponse(
             ok=True,
-            mode=mode,
             token_count=tok,
             llm_output=reply,
             db_action=db_action,
@@ -335,7 +384,6 @@ async def analyze(
         set_stage(f"失敗: {str(e)}")
         return AnalyzeResponse(
             ok=False,
-            mode=mode,
             token_count=0,
             llm_output="",
             error=str(e),
@@ -352,7 +400,7 @@ def dataset_list(request: Request):
 
     rows = conn.execute(
         """
-        SELECT case_id, serial, model, fw_version, updated_at
+        SELECT case_id, serial, model, fw_version,issue, updated_at
         FROM cases
         ORDER BY case_id DESC
         LIMIT 100
@@ -486,20 +534,18 @@ def dataset_edit_submit(
 
     return RedirectResponse(f"/dataset/{case_id}", status_code=303)
 
+
 @app.post("/dataset/{case_id}/delete")
 def dataset_delete(case_id: int):
-
     conn = connect_db()
 
-    # 刪除指定 case
     conn.execute(
         "DELETE FROM cases WHERE case_id=?",
-        (case_id,)
+        (case_id,),
     )
 
     conn.commit()
 
-    # 重新排序 case_id
     rows = conn.execute(
         """
         SELECT serial, model, fw_version,
@@ -510,11 +556,9 @@ def dataset_delete(case_id: int):
         """
     ).fetchall()
 
-    # 清空 table
     conn.execute("DELETE FROM cases")
     conn.execute("DELETE FROM sqlite_sequence WHERE name='cases'")
 
-    # 重新 insert
     for r in rows:
         conn.execute(
             """
@@ -525,13 +569,14 @@ def dataset_delete(case_id: int):
             )
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """,
-            r
+            r,
         )
 
     conn.commit()
     conn.close()
 
     return RedirectResponse("/dataset", status_code=303)
+
 
 @app.get("/dataset/{case_id}")
 def dataset_view(request: Request, case_id: int):

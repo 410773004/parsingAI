@@ -5,9 +5,14 @@ Use only the provided log content and metadata.
 Do not speculate.
 Do not invent missing information.
 
-If evidence is insufficient, return evidence_level as "INSUFFICIENT_EVIDENCE".
-""".strip()
+If evidence is insufficient, clearly state "INSUFFICIENT_EVIDENCE".
 
+Focus on:
+- Customer reported issue
+- Abnormal events in log
+- Event relationships (event flow)
+- Root cause analysis based only on evidence
+""".strip()
 USER_TEMPLATE = r"""
 Model:
 {model}
@@ -20,70 +25,33 @@ Customer reported issue:
 
 The following log has already been pre-filtered and cleaned.
 
+========================
+LOG CONTENT
+========================
+{log_text}
+========================
+
 Your task:
 
-1. Identify abnormal events in the log.
-2. Analyze their context.
-3. Determine whether they relate to the reported issue.
-4. Provide a final assessment.
+1. Identify abnormal or rare events related to the issue.
+2. Use event flow (sequence and relationship) to analyze possible cause.
+3. Ignore normal or irrelevant events (e.g., PCIe/AER unless clearly abnormal).
+4. Do NOT assume missing information.
 
-Important:
-- PCIe related events (pcie, aer, ltssm) are considered normal unless there is strong evidence linking them to the issue.
-- Do not repeat the entire log.
-- Use only the provided information.
+Output format (STRICT):
 
-Return the result using this JSON schema:
+[FA Summary]
+- Brief summary of the issue and overall system condition.
 
-{{
-  "issue_summary": {{
-    "customer_issue": "string",
-    "model": "string",
-    "fw_version": "string"
-  }},
-  "log_findings": [
-    {{
-      "event": "string",
-      "evidence": ["string"],
-      "context": "string",
-      "analysis": "string",
-      "related_to_issue": true
-    }}
-  ],
-  "conclusion": {{
-    "summary": "string",
-    "likely_cause": "string",
-    "evidence_level": "STRONG | MODERATE | WEAK | INSUFFICIENT_EVIDENCE"
-  }}
-}}
+[Key Events]
+- List important abnormal events (with short explanation).
 
-Example output:
+[Event Flow Analysis]
+- Explain sequence and relationship between events.
 
-{{
-  "issue_summary": {{
-    "customer_issue": "I/O error reported by host",
-    "model": "PJ1",
-    "fw_version": "FG2N9031"
-  }},
-  "log_findings": [
-    {{
-      "event": "ECC decode error",
-      "evidence": [
-        "eccu_enc_err_get() - enc err 11",
-        "retry fail"
-      ],
-      "context": "Repeated decode errors occur during NAND read retry.",
-      "analysis": "Persistent ECC decode failures indicate NAND read instability.",
-      "related_to_issue": true
-    }}
-  ],
-  "conclusion": {{
-    "summary": "Log shows repeated NAND read failures.",
-    "likely_cause": "Possible NAND media error",
-    "evidence_level": "MODERATE"
-  }}
-}}
+[Root Cause Analysis]
+- Explain most likely root cause based ONLY on evidence.
 
-<LOG>
-{log_text}
-</LOG>
-""".lstrip()
+[Confidence]
+- SUFFICIENT_EVIDENCE or INSUFFICIENT_EVIDENCE
+"""
