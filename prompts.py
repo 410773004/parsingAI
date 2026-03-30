@@ -1,3 +1,4 @@
+#prompts.py
 SYSTEM = """
 You are a firmware log analysis assistant.
 

@@ -1,26 +1,31 @@
-#config.py
-# 必要
+# ===== 模型設定 =====
 MODEL = "qwen3:4b"
-TEMPERATURE = 0.0
+TEMPERATURE = 0
 
-# log 檔案匹配
-LOG_PATTERNS = ["Hs*.log"]  # 你要加 norlog.log 也可以：["Hs*.log", "norlog.log"]
+# ===== LLM 參數 =====
+TOP_P = 0.95
+TOP_K = 20
+REPEAT_PENALTY = 1
 
-# search_string.json 路徑（相對於 main.py）
+NUM_CTX = 100000  # 可調（最大262144）
+
+# ===== log 設定 =====
+LOG_PATTERNS = ["Hs*.log"]
+
 SEARCH_JSON = "search_string.json"
 
-# 輸出檔名
-PICKED_LOG = "picked.log"   # Stage1 挑選後
-MERGED_LOG = "merged.log"   # Stage2 清洗後（實際送模型）
+PICKED_LOG = "picked.log"
+MERGED_LOG = "merged.log"
 OUTPUT_JSON = "result.json"
 
-# token 計算（可選）
 TIKTOKEN_ENCODING = "cl100k_base"
 
+# ===== 溫度 =====
 TEMP_LOW_THRESHOLD = 0
 TEMP_HIGH_THRESHOLD = 85
-TEMP_OUTLIER_LIMIT = 10   # 最多列幾筆異常樣本
+TEMP_OUTLIER_LIMIT = 10
 
+# ===== event flow =====
 FLOW_DETAIL_PRE_LINES = 200
 EVENT_FLOW_TOP_N = 20
 EVENTS_PER_LINE = 5

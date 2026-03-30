@@ -1,3 +1,4 @@
+#server.py
 from __future__ import annotations
 
 import sqlite3
@@ -134,10 +135,16 @@ def run_llm(cleaned: str, project: str, fw_version: str, issue: str) -> str:
     resp = ollama.chat(
         model=config.MODEL,
         messages=messages,
-        options={"temperature": config.TEMPERATURE},
+        options={
+            "temperature": config.TEMPERATURE,
+            "top_p": config.TOP_P,
+            "top_k": config.TOP_K,
+            "repeat_penalty": config.REPEAT_PENALTY,
+            "num_ctx": config.NUM_CTX,
+        },
     )
 
-    return resp["message"]["content"]
+    return resp.get("message", {}).get("content", "")
 
 
 def upsert_case_to_db(
