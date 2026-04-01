@@ -16,7 +16,6 @@ from parsers.project_parser import (
 from parsers.filter import load_settings
 from parsers.temperature import build_temperature_section
 from parsers.event_flow import analyze_event_flow
-from parsers.compress import process_lines
 
 _SN_RE = re.compile(r"SN([A-Za-z0-9]{12})", re.IGNORECASE)
 
@@ -110,8 +109,7 @@ def analyze(
     _stage("分析 Event Flow")
     _settings = load_settings(SEARCH_JSON_MAP[project])
     _ignore = {s.lower() for s in _settings.get("ignore_event_signatures", [])}
-    flow_raw = analyze_event_flow(log_folder, ignore=_ignore)
-    flow_block = "\n".join(process_lines(flow_raw.splitlines(keepends=True)))
+    flow_block = analyze_event_flow(log_folder, ignore=_ignore)
 
     _stage("分析溫度")
     temp_section = build_temperature_section(log_folder)
