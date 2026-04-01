@@ -278,6 +278,7 @@ def build_full_output_tab(nb: ttk.Notebook) -> None:
     tk.Label(btn_frame, textvariable=status, fg="gray").pack(side="left", padx=6)
 
     out = make_output(tab)
+    _serial = [""]
 
     def run():
         folder = Path(folder_var.get())
@@ -294,6 +295,7 @@ def build_full_output_tab(nb: ttk.Notebook) -> None:
                 return
 
             meta = extract_metadata_from_raw_logs(folder)
+            _serial[0] = meta.get("serial") or ""
 
             status.set("解析 log 中...")
             parsed = parse(project, folder)
@@ -336,10 +338,11 @@ def build_full_output_tab(nb: ttk.Notebook) -> None:
         if not text:
             messagebox.showwarning("警告", "尚無內容可儲存")
             return
+        default_name = f"{_serial[0]}_parsing.txt" if _serial[0] else "full_output.txt"
         path = filedialog.asksaveasfilename(
             defaultextension=".txt",
             filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")],
-            initialfile="full_output.txt",
+            initialfile=default_name,
         )
         if path:
             Path(path).write_text(text, encoding="utf-8")
