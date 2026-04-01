@@ -41,28 +41,34 @@ def _count_tokens(text: str) -> int:
         return max(1, len(text) // 4)
 
 
-def _run_llm(cleaned: str, project: str, fw_version: str, issue: str) -> str:
+def _run_llm(cleaned: str, project: str, fw_version: str, issue: str, on_token=None) -> str:
     user_prompt = prompts.USER_TEMPLATE.format(
         model=project,
         fw_version=fw_version,
         issue=issue,
         log_text=cleaned,
     )
-    resp = ollama.chat(
-        model=config.MODEL,
-        messages=[
-            {"role": "system", "content": prompts.SYSTEM},
-            {"role": "user", "content": user_prompt},
-        ],
-        options={
-            "temperature": config.TEMPERATURE,
-            "top_p": config.TOP_P,
-            "top_k": config.TOP_K,
-            "repeat_penalty": config.REPEAT_PENALTY,
-            "num_ctx": config.NUM_CTX,
-        },
-    )
-    return resp.get("message", {}).get("content", "")
+    messages = [
+        {"role": "system", "content": prompts.SYSTEM},
+        {"role": "user", "content": user_prompt},
+    ]
+    options = {
+        "temperature": config.TEMPERATURE,
+        "top_p": config.TOP_P,
+        "top_k": config.TOP_K,
+        "repeat_penalty": config.REPEAT_PENALTY,
+        "num_ctx": config.NUM_CTX,
+    }
+    if on_token:
+        full_text = ""
+        for chunk in ollama.chat(model=config.MODEL, messages=messages, options=options, stream=True):
+            token = chunk.get("message", {}).get("content", "")
+            full_text += token
+            on_token(token)
+        return full_text
+    else:
+        resp = ollama.chat(model=config.MODEL, messages=messages, options=options)
+        return resp.get("message", {}).get("content", "")
 
 
 def _inject_extra_sections(cleaned: str, sections: list[str]) -> str:
@@ -83,6 +89,7 @@ def analyze(
     log_folder: Path,
     issue: str,
     folder_name: str = "",
+    on_token=None,
 ) -> dict:
     """
     Run the full analysis pipeline on a folder of log files.
@@ -123,7 +130,7 @@ def analyze(
     token_count = _count_tokens(cleaned)
 
     _stage("LLM 分析中")
-    llm_output = _run_llm(cleaned, project, fw_version, issue)
+    llm_output = _run_llm(cleaned, project, fw_version, issue, on_token=on_token)
 
     return {
         "project": project,
