@@ -165,6 +165,9 @@ _SNIPPET_DROP_PREFIXES = (
     "pcie_dbglog()",
 )
 
+# pcie_dbglog 行因 log 斷行產生的孤立片段，例如 "004," "0f4," "4:0,"
+_SNIPPET_ORPHAN_RE = re.compile(r"^[0-9A-Fa-f:, ]+,$")
+
 _SNIPPET_DEDUP_PREFIXES = (
     "POH:",
     "PGR Ver",
@@ -184,6 +187,7 @@ def build_snippet(file_path: str, first_line: int, last_line: int) -> tuple[int,
 
     out: list[str] = []
     seen_dedup: set[str] = set()
+    prev_dropped = False
 
     with open(file_path, "r", encoding="utf-8", errors="ignore") as fh:
         for i, line in enumerate(fh, start=1):
@@ -196,13 +200,21 @@ def build_snippet(file_path: str, first_line: int, last_line: int) -> tuple[int,
             cleaned = clean_line(raw)
 
             if not cleaned:
+                prev_dropped = False
                 continue
 
             stripped = cleaned.strip()
 
             # 問題 5：丟掉 pcie_dbglog 等雜訊行
             if any(stripped.startswith(p) for p in _SNIPPET_DROP_PREFIXES):
+                prev_dropped = True
                 continue
+
+            # 丟掉 pcie_dbglog 斷行產生的孤立 hex 片段
+            if prev_dropped and _SNIPPET_ORPHAN_RE.match(stripped):
+                continue
+
+            prev_dropped = False
 
             # 問題 3：重複 metadata 只保留第一次
             dedup_key = next(
