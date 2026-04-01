@@ -26,7 +26,7 @@ python tools/test_temperature.py
 ## Running the standalone log compressor GUI
 
 ```bash
-python compress.py
+python parsers/compress.py
 ```
 
 ## Architecture

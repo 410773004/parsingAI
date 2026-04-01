@@ -1,6 +1,13 @@
 {
   "context_lines": 300,
 
+  "ignore_event_signatures": [
+    "pcie link error",
+    "plp handle finished",
+    "Telemetry update",
+    "nvme save log"
+  ],
+
   "keywords": [
     {
       "type": "error",

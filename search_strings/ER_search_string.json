@@ -1,6 +1,9 @@
 {
   "path_file_dir": "",
   "file_name": [],
+
+  "ignore_event_signatures": [],
+
   "keywords": [
     {
       "type": "error",

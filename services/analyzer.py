@@ -5,15 +5,17 @@ from pathlib import Path
 import ollama
 import tiktoken
 
-import config
-import prompts
+from settings import config
+from settings import prompts
 from parsers.project_parser import (
     parse as parse_project,
     detect_project_from_raw_logs,
     extract_metadata_from_raw_logs,
+    SEARCH_JSON_MAP,
 )
+from parsers.filter import load_settings
 from parsers.temperature import build_temperature_section
-from event_flow import analyze_event_flow
+from parsers.event_flow import analyze_event_flow
 
 _SN_RE = re.compile(r"SN([A-Za-z0-9]{12})", re.IGNORECASE)
 
@@ -98,7 +100,9 @@ def analyze(
     cleaned = parse_project(project, log_folder)
 
     _stage("分析 Event Flow")
-    flow_block = analyze_event_flow(log_folder)
+    _settings = load_settings(SEARCH_JSON_MAP[project])
+    _ignore = {s.lower() for s in _settings.get("ignore_event_signatures", [])}
+    flow_block = analyze_event_flow(log_folder, ignore=_ignore)
 
     _stage("分析溫度")
     temp_section = build_temperature_section(log_folder)

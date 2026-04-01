@@ -12,10 +12,20 @@ from parsers.project_parser import (
     detect_project_from_raw_logs,
     parse,
     extract_metadata_from_raw_logs,
+    SEARCH_JSON_MAP,
 )
+from parsers.filter import load_settings
 from parsers.temperature import build_temperature_section
-from event_flow import build_path_map, format_flow, format_flow_detail
-from compress import process_lines, count_tokens
+from parsers.event_flow import build_path_map, format_flow, format_flow_detail
+from parsers.compress import process_lines, count_tokens
+
+
+def _load_ignore(folder) -> set[str]:
+    project = detect_project_from_raw_logs(folder)
+    if project and project in SEARCH_JSON_MAP:
+        s = load_settings(SEARCH_JSON_MAP[project])
+        return {e.lower() for e in s.get("ignore_event_signatures", [])}
+    return set()
 
 
 # ── 共用元件 ──────────────────────────────────────────────────────────────────
@@ -144,7 +154,7 @@ def build_event_flow_tab(nb: ttk.Notebook) -> None:
         def task():
             status.set("分析中...")
             top_n = top_n_var.get()
-            counter, samples, total_lines, total_segments = build_path_map(folder)
+            counter, samples, total_lines, total_segments = build_path_map(folder, _load_ignore(folder))
             result = (
                 f"總行數      : {total_lines}\n"
                 f"總 segment  : {total_segments}\n"
@@ -289,7 +299,7 @@ def build_full_output_tab(nb: ttk.Notebook) -> None:
             parsed = parse(project, folder)
 
             status.set("分析 Event Flow 中...")
-            counter, samples, total_lines, total_segments = build_path_map(folder)
+            counter, samples, total_lines, total_segments = build_path_map(folder, _load_ignore(folder))
             flow_text = (
                 format_flow(counter, total_lines, total_segments)
                 + "\n"

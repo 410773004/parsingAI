@@ -36,22 +36,6 @@ def count_tokens(text: str) -> int:
     return max(1, len(text) // 4) if text else 0
 
 
-def is_noise_line(line: str) -> bool:
-    s = line.strip().lower()
-
-    if "getsensortemp()" in s:
-        return True
-
-    return False
-
-
-def get_func_name(line: str) -> str:
-    s = line.strip()
-    if "()" in s:
-        return s.split("()", 1)[0]
-    return ""
-
-
 def apply_function_rules(line: str) -> str | None:
     s = line.rstrip("\n")
     s_stripped = s.strip()

@@ -2,7 +2,7 @@
 import sqlite3
 from pathlib import Path
 
-DB_PATH = Path("data/fa_dataset.db")
+DB_PATH = Path(__file__).resolve().parent.parent / "data" / "fa_dataset.db"
 
 
 def connect() -> sqlite3.Connection:

@@ -1,8 +1,10 @@
 # server.py
 from __future__ import annotations
 
+import asyncio
 import shutil
 import tempfile
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Optional
 
@@ -15,10 +17,8 @@ from pydantic import BaseModel
 from db import database, crud
 from services import analyzer
 
-app = FastAPI(title="ParsingAI Server")
-templates = Jinja2Templates(directory="templates")
-
 _current_stage = "idle"
+_analyze_lock = asyncio.Lock()
 
 
 def _set_stage(stage: str) -> None:
@@ -29,6 +29,16 @@ def _set_stage(stage: str) -> None:
 analyzer.set_stage_callback(_set_stage)
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    database.init()
+    yield
+
+
+app = FastAPI(title="ParsingAI Server", lifespan=lifespan)
+templates = Jinja2Templates(directory="templates")
+
+
 class AnalyzeResponse(BaseModel):
     ok: bool
     token_count: int
@@ -36,11 +46,6 @@ class AnalyzeResponse(BaseModel):
     db_action: Optional[str] = None
     case_id: Optional[int] = None
     error: Optional[str] = None
-
-
-@app.on_event("startup")
-def startup_event() -> None:
-    database.init()
 
 
 @app.get("/progress")
@@ -91,7 +96,8 @@ async def analyze_endpoint(
             return AnalyzeResponse(ok=False, token_count=0, llm_output="", error="no valid log found")
 
         primary_folder = folder_names.split("||")[0].strip() if folder_names else ""
-        result = await run_in_threadpool(analyzer.analyze, temp_dir, final_issue, primary_folder)
+        async with _analyze_lock:
+            result = await run_in_threadpool(analyzer.analyze, temp_dir, final_issue, primary_folder)
 
         db_action = None
         case_id = None
@@ -142,11 +148,12 @@ def dataset_new_submit(
     serial: str = Form(...),
     model: str = Form(...),
     fw_version: str = Form(""),
+    issue: str = Form(""),
     cleaned_log: str = Form(""),
     llm_output: str = Form(""),
     ground_truth: str = Form(""),
 ):
-    crud.create_case(serial, model, fw_version, cleaned_log, llm_output, ground_truth)
+    crud.create_case(serial, model, fw_version, issue, cleaned_log, llm_output, ground_truth)
     return RedirectResponse("/dataset", status_code=303)
 
 
@@ -164,11 +171,12 @@ def dataset_edit_submit(
     serial: str = Form(...),
     model: str = Form(...),
     fw_version: str = Form(""),
+    issue: str = Form(""),
     cleaned_log: str = Form(""),
     llm_output: str = Form(""),
     ground_truth: str = Form(""),
 ):
-    crud.update_case(case_id, serial, model, fw_version, cleaned_log, llm_output, ground_truth)
+    crud.update_case(case_id, serial, model, fw_version, issue, cleaned_log, llm_output, ground_truth)
     return RedirectResponse(f"/dataset/{case_id}", status_code=303)
 
 

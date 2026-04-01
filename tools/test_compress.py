@@ -10,7 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from compress import process_lines, count_tokens
+from parsers.compress import process_lines, count_tokens
 
 
 def main():

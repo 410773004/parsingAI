@@ -1,7 +1,7 @@
 # parsers/temperature.py
 import re
 from pathlib import Path
-import config
+from settings import config
 
 _TEMP_RE = re.compile(
     r"Idx:(\d+),Temp:([-]?\d+),\s*soc:\s*(\d+)",

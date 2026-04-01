@@ -4,16 +4,11 @@ from pathlib import Path
 from collections import Counter
 from parsers.simplifier import clean_line
 
-import config
+from settings import config
 
 
 BOOT_PATTERN = re.compile(r"CPU1:\s*0x00000002")
 EVT_PATTERN = re.compile(r"\[evt by cpu.*?\]\s*(?:\d+\s*)?(.*)", re.IGNORECASE)
-
-IGNORE_EVENTS = {
-    "plp handle finished",
-    "pcie link error",
-}
 
 
 def load_logs(folder: str | Path) -> list[dict]:
@@ -61,8 +56,9 @@ def split_segments(rows: list[dict]) -> list[list[dict]]:
     return segments
 
 
-def extract_events(segment: list[dict]) -> list[dict]:
+def extract_events(segment: list[dict], ignore: set[str] | None = None) -> list[dict]:
     events: list[dict] = []
+    _ignore = ignore or set()
 
     for row in segment:
         line = row["text"]
@@ -74,7 +70,7 @@ def extract_events(segment: list[dict]) -> list[dict]:
         if not evt:
             continue
 
-        if evt.lower() in IGNORE_EVENTS:
+        if evt.lower() in _ignore:
             continue
 
         events.append({
@@ -128,7 +124,7 @@ def wrap_path(path: str, per_line: int | None = None) -> str:
     return "\n".join(lines)
 
 
-def build_path_map(log_folder: str | Path) -> tuple[Counter, dict, int, int]:
+def build_path_map(log_folder: str | Path, ignore: set[str] | None = None) -> tuple[Counter, dict, int, int]:
     rows = load_logs(log_folder)
     segments = split_segments(rows)
 
@@ -136,7 +132,7 @@ def build_path_map(log_folder: str | Path) -> tuple[Counter, dict, int, int]:
     samples: dict[str, dict] = {}
 
     for seg in segments:
-        events = extract_events(seg)
+        events = extract_events(seg, ignore)
         events = dedup_consecutive(events)
 
         if not events:
@@ -294,8 +290,8 @@ def format_flow_detail(counter: Counter, samples: dict, top_n: int | None = None
     return "\n".join(out).strip() + "\n"
 
 
-def analyze_event_flow(log_folder: str | Path, top_n: int | None = None) -> str:
-    counter, samples, total_lines, total_segments = build_path_map(log_folder)
+def analyze_event_flow(log_folder: str | Path, ignore: set[str] | None = None, top_n: int | None = None) -> str:
+    counter, samples, total_lines, total_segments = build_path_map(log_folder, ignore)
 
     flow_text = format_flow(counter, total_lines, total_segments, top_n=top_n)
     detail_text = format_flow_detail(counter, samples, top_n=top_n)
@@ -305,10 +301,17 @@ def analyze_event_flow(log_folder: str | Path, top_n: int | None = None) -> str:
 
 if __name__ == "__main__":
     import sys
+    from parsers.project_parser import detect_project_from_raw_logs, SEARCH_JSON_MAP
+    from parsers.filter import load_settings
 
     if len(sys.argv) != 2:
         print("Usage: python event_flow.py <log_folder>")
         raise SystemExit(1)
 
     folder = sys.argv[1]
-    print(analyze_event_flow(folder))
+    _project = detect_project_from_raw_logs(folder)
+    _ignore: set[str] = set()
+    if _project and _project in SEARCH_JSON_MAP:
+        _s = load_settings(SEARCH_JSON_MAP[_project])
+        _ignore = {s.lower() for s in _s.get("ignore_event_signatures", [])}
+    print(analyze_event_flow(folder, ignore=_ignore))

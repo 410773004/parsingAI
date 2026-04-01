@@ -10,7 +10,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from event_flow import build_path_map, format_flow, format_flow_detail
+from parsers.event_flow import build_path_map, format_flow, format_flow_detail
+from parsers.project_parser import detect_project_from_raw_logs, SEARCH_JSON_MAP
+from parsers.filter import load_settings
 
 
 def main():
@@ -25,8 +27,14 @@ def main():
 
     top_n = int(sys.argv[2]) if len(sys.argv) >= 3 else 20
 
+    project = detect_project_from_raw_logs(folder)
+    ignore: set[str] = set()
+    if project and project in SEARCH_JSON_MAP:
+        _settings = load_settings(SEARCH_JSON_MAP[project])
+        ignore = {s.lower() for s in _settings.get("ignore_event_signatures", [])}
+
     print(f"[1] 讀取並分段 log（top_n={top_n}）...")
-    counter, samples, total_lines, total_segments = build_path_map(folder)
+    counter, samples, total_lines, total_segments = build_path_map(folder, ignore)
     print(f"    → 總行數：{total_lines}")
     print(f"    → 總 segment 數：{total_segments}")
     print(f"    → 不重複 path 數：{len(counter)}")

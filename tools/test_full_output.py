@@ -12,8 +12,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from parsers.project_parser import detect_project_from_raw_logs, parse, extract_metadata_from_raw_logs
 from parsers.temperature import build_temperature_section
-from event_flow import build_path_map, format_flow, format_flow_detail
-from compress import process_lines, count_tokens
+from parsers.event_flow import build_path_map, format_flow, format_flow_detail
+from parsers.compress import process_lines, count_tokens
 
 
 def main():

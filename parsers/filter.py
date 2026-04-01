@@ -16,11 +16,6 @@ PGR_RE = re.compile(r"PGR Ver\s*:\s*(\S+)")
 LDR_RE = re.compile(r"Loader Ver\s*:\s*(\S+)")
 NAND_RE = re.compile(r"(\d+CH\*\d+CE\*\d+LUN\*\d+PL)")
 
-IGNORE_EVENT_SIGNATURES = {
-    "pcie link error",
-    "plp handle finished",
-}
-
 
 def remove_timestamp(lines):
     out = []
@@ -115,17 +110,13 @@ def get_event_signature(block):
     return block[-1].strip() if block else "unknown event"
 
 
-def should_ignore_signature(sig: str) -> bool:
-    return sig.strip().lower() in IGNORE_EVENT_SIGNATURES
-
-
-def cluster_event_blocks(blocks):
+def cluster_event_blocks(blocks, ignore_sigs: set[str]):
     clusters = {}
 
     for block in blocks:
         sig = get_event_signature(block)
 
-        if should_ignore_signature(sig):
+        if sig.strip().lower() in ignore_sigs:
             continue
 
         if sig not in clusters:
@@ -163,6 +154,7 @@ def run_filter(settings, log_folder):
 
     keywords = settings.get("keywords", [])
     global_context = int(settings.get("context_lines", 20) or 20)
+    ignore_sigs = {s.lower() for s in settings.get("ignore_event_signatures", [])}
 
     all_blocks = []
 
@@ -183,7 +175,7 @@ def run_filter(settings, log_folder):
         block = compress_repeated(block)
         processed_blocks.append(block)
 
-    clusters = cluster_event_blocks(processed_blocks)
+    clusters = cluster_event_blocks(processed_blocks, ignore_sigs)
     sorted_clusters = sorted(
         clusters.items(),
         key=lambda x: x[1]["count"],
@@ -193,7 +185,6 @@ def run_filter(settings, log_folder):
     smart = load_smart(log_folder)
 
     sep = "=" * 80
-    sub_sep = "-" * 80
 
     out = []
 
