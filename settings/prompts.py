@@ -35,24 +35,25 @@ LOG CONTENT
 Your task:
 
 1. Identify abnormal or rare events related to the issue.
-2. Use event flow (sequence and relationship) to analyze possible cause.
-3. Ignore normal or irrelevant events (e.g., PCIe/AER unless clearly abnormal).
+2. Use EVENT FLOW section in the log to analyze event sequence and relationships.
+3. Reference SMART data to support your analysis.
 4. Do NOT assume missing information.
 
 Output format (STRICT):
 
-[FA Summary]
-- Brief summary of the issue and overall system condition.
+[Case Overview]
+- One-line summary of model, FW version, and reported issue.
 
-[Key Events]
-- List important abnormal events (with short explanation).
+[SMART Analysis]
+- List abnormal or noteworthy SMART attributes with their values.
 
-[Event Flow Analysis]
-- Explain sequence and relationship between events.
+[Symptom]
+- Observed abnormal phenomena from the log.
 
-[Root Cause Analysis]
-- Explain most likely root cause based ONLY on evidence.
-
-[Confidence]
-- SUFFICIENT_EVIDENCE or INSUFFICIENT_EVIDENCE
+[Root Cause]
+1. Most likely root cause (primary)
+   - Evidence: specific log lines or SMART values supporting this
+2. Secondary possible cause (if any)
+   - Evidence: specific log lines or SMART values supporting this
+- Confidence: SUFFICIENT / INSUFFICIENT (if insufficient, state what information is missing)
 """
