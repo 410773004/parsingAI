@@ -161,6 +161,21 @@ def build_path_map(log_folder: str | Path) -> tuple[Counter, dict, int, int]:
     return counter, samples, len(rows), len(segments)
 
 
+_SNIPPET_DROP_PREFIXES = (
+    "pcie_dbglog()",
+)
+
+_SNIPPET_DEDUP_PREFIXES = (
+    "POH:",
+    "PGR Ver",
+    "Loader Ver",
+    "SN:",
+    "Rx Err Cnt",
+    "Retrain",
+    "Power cycle cnt",
+)
+
+
 def build_snippet(file_path: str, first_line: int, last_line: int) -> tuple[int, int, str]:
     pre_lines = getattr(config, "FLOW_DETAIL_PRE_LINES", 200)
 
@@ -168,6 +183,8 @@ def build_snippet(file_path: str, first_line: int, last_line: int) -> tuple[int,
     end_line = last_line
 
     out: list[str] = []
+    seen_dedup: set[str] = set()
+
     with open(file_path, "r", encoding="utf-8", errors="ignore") as fh:
         for i, line in enumerate(fh, start=1):
             if i < start_line:
@@ -178,9 +195,23 @@ def build_snippet(file_path: str, first_line: int, last_line: int) -> tuple[int,
             raw = line.rstrip("\n")
             cleaned = clean_line(raw)
 
-            # 清完變空就跳過
             if not cleaned:
                 continue
+
+            stripped = cleaned.strip()
+
+            # 問題 5：丟掉 pcie_dbglog 等雜訊行
+            if any(stripped.startswith(p) for p in _SNIPPET_DROP_PREFIXES):
+                continue
+
+            # 問題 3：重複 metadata 只保留第一次
+            dedup_key = next(
+                (p for p in _SNIPPET_DEDUP_PREFIXES if stripped.startswith(p)), None
+            )
+            if dedup_key:
+                if dedup_key in seen_dedup:
+                    continue
+                seen_dedup.add(dedup_key)
 
             out.append(cleaned)
 
