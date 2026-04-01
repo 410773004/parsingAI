@@ -7,7 +7,7 @@ TOP_P = 0.95
 TOP_K = 20
 REPEAT_PENALTY = 1
 
-NUM_CTX = 1000  # 可調（最大262144）
+NUM_CTX = 100000  # 可調（最大262144）
 
 # ===== log 設定 =====
 LOG_PATTERNS = ["Hs*.log"]
