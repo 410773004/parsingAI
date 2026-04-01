@@ -1,4 +1,5 @@
 # services/analyzer.py
+import math
 import re
 from pathlib import Path
 
@@ -52,12 +53,17 @@ def _run_llm(cleaned: str, project: str, fw_version: str, issue: str, on_token=N
         {"role": "system", "content": prompts.SYSTEM},
         {"role": "user", "content": user_prompt},
     ]
+    prompt_tokens = _count_tokens(prompts.SYSTEM + user_prompt)
+    num_ctx = min(
+        config.NUM_CTX,
+        math.ceil((prompt_tokens + 1500) / 1000) * 1000,
+    )
     options = {
         "temperature": config.TEMPERATURE,
         "top_p": config.TOP_P,
         "top_k": config.TOP_K,
         "repeat_penalty": config.REPEAT_PENALTY,
-        "num_ctx": config.NUM_CTX,
+        "num_ctx": num_ctx,
     }
     if on_token:
         full_text = ""
