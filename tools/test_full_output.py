@@ -10,7 +10,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from parsers.project_parser import detect_project_from_raw_logs, parse, extract_metadata_from_raw_logs
+from parsers.project_parser import detect_project_from_raw_logs, parse, extract_metadata_from_raw_logs, SEARCH_JSON_MAP
+from parsers.filter import load_settings
 from parsers.temperature import build_temperature_section
 from parsers.event_flow import build_path_map, format_flow, format_flow_detail
 from parsers.compress import process_lines, count_tokens
@@ -43,7 +44,9 @@ def main():
     parsed = parse(project, folder)
 
     print("[3] 分析 Event Flow 並壓縮...")
-    counter, samples, total_lines, total_segments = build_path_map(folder)
+    _settings = load_settings(SEARCH_JSON_MAP[project])
+    ignore = {s.lower() for s in _settings.get("ignore_event_signatures", [])}
+    counter, samples, total_lines, total_segments = build_path_map(folder, ignore)
     flow_text = (
         format_flow(counter, total_lines, total_segments)
         + "\n"
