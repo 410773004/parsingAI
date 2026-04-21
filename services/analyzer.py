@@ -16,7 +16,8 @@ from parsers.project_parser import (
 )
 from parsers.filter import load_settings
 from parsers.temperature import build_temperature_section
-from parsers.event_flow import analyze_event_flow
+from parsers.pcie_link import build_pcie_link_section
+from parsers.event_flow import build_path_map, build_compressed_flow
 
 _SN_RE = re.compile(r"SN([A-Za-z0-9]{12})", re.IGNORECASE)
 
@@ -115,12 +116,17 @@ def analyze(
     _stage("分析 Event Flow")
     _settings = load_settings(SEARCH_JSON_MAP[project])
     _ignore = {s.lower() for s in _settings.get("ignore_event_signatures", [])}
-    flow_block = analyze_event_flow(log_folder, ignore=_ignore)
+    _single_ignore = set(_settings.get("single_event_ignore", []))
+    counter, samples, total_lines, total_segments = build_path_map(log_folder, ignore=_ignore, project=project, single_ignore=_single_ignore)
+    flow_block = build_compressed_flow(counter, samples, total_lines, total_segments, project=project)
 
     _stage("分析溫度")
-    temp_section = build_temperature_section(log_folder)
+    temp_section = build_temperature_section(log_folder, project=project)
 
-    extra = [s for s in [temp_section, flow_block] if s]
+    _stage("分析 PCIe Link")
+    pcie_section = build_pcie_link_section(log_folder)
+
+    extra = [s for s in [temp_section, pcie_section, flow_block] if s]
     cleaned = _inject_extra_sections(cleaned, extra)
 
     if not cleaned.strip():

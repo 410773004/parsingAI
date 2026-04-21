@@ -16,7 +16,8 @@ from parsers.project_parser import (
 )
 from parsers.filter import load_settings
 from parsers.temperature import build_temperature_section
-from parsers.event_flow import build_path_map, format_flow, format_flow_detail
+from parsers.pcie_link import build_pcie_link_section
+from parsers.event_flow import build_path_map, format_flow, format_flow_detail, build_compressed_flow
 from parsers.compress import process_lines, count_tokens
 
 
@@ -30,6 +31,9 @@ def _load_ignore(folder) -> set[str]:
 
 # ── 共用元件 ──────────────────────────────────────────────────────────────────
 
+_last_upload_dir = [""]
+
+
 def make_folder_row(parent, label_text: str) -> tk.StringVar:
     """資料夾選擇列，回傳路徑 StringVar。"""
     var = tk.StringVar()
@@ -37,10 +41,14 @@ def make_folder_row(parent, label_text: str) -> tk.StringVar:
     frame.pack(fill="x", padx=12, pady=(10, 0))
     tk.Label(frame, text=label_text, width=10, anchor="w").pack(side="left")
     tk.Entry(frame, textvariable=var, width=50).pack(side="left", padx=4)
-    tk.Button(
-        frame, text="瀏覽",
-        command=lambda: var.set(filedialog.askdirectory())
-    ).pack(side="left")
+
+    def browse():
+        chosen = filedialog.askdirectory(initialdir=_last_upload_dir[0] or None)
+        if chosen:
+            var.set(chosen)
+            _last_upload_dir[0] = chosen
+
+    tk.Button(frame, text="瀏覽", command=browse).pack(side="left")
     return var
 
 
@@ -154,7 +162,8 @@ def build_event_flow_tab(nb: ttk.Notebook) -> None:
         def task():
             status.set("分析中...")
             top_n = top_n_var.get()
-            counter, samples, total_lines, total_segments = build_path_map(folder, _load_ignore(folder))
+            project = detect_project_from_raw_logs(folder) or "PJ1"
+            counter, samples, total_lines, total_segments = build_path_map(folder, _load_ignore(folder), project=project)
             result = (
                 f"總行數      : {total_lines}\n"
                 f"總 segment  : {total_segments}\n"
@@ -162,7 +171,7 @@ def build_event_flow_tab(nb: ttk.Notebook) -> None:
                 f"{'=' * 80}\n\n"
                 + format_flow(counter, total_lines, total_segments, top_n=top_n)
                 + "\n"
-                + format_flow_detail(counter, samples, top_n=top_n)
+                + format_flow_detail(counter, samples, top_n=top_n, project=project)
             )
             write_output(out, result)
             status.set("完成")
@@ -196,9 +205,10 @@ def build_temperature_tab(nb: ttk.Notebook) -> None:
         def task():
             status.set("分析中...")
             log_files = list(folder.glob("Hs*.log"))
-            result = build_temperature_section(folder)
+            project = detect_project_from_raw_logs(folder) or "PJ1"
+            result = build_temperature_section(folder, project=project)
             if not result:
-                write_output(out, "未找到任何 GetSensorTemp 資料。\n請確認資料夾內有 Hs*.log 檔案。")
+                write_output(out, "未找到任何溫度資料。\n請確認資料夾內有 Hs*.log 檔案。")
             else:
                 header = f"找到 {len(log_files)} 個 Hs*.log 檔案\n{'=' * 80}\n\n"
                 write_output(out, header + result)
@@ -209,7 +219,66 @@ def build_temperature_tab(nb: ttk.Notebook) -> None:
     tk.Button(btn_frame, text="執行分析", command=run, width=12).pack(side="left")
 
 
-# ── Tab 4：Compress ───────────────────────────────────────────────────────────
+# ── Tab 4：PCIe Link ──────────────────────────────────────────────────────────
+
+def build_pcie_link_tab(nb: ttk.Notebook) -> None:
+    tab = ttk.Frame(nb)
+    nb.add(tab, text="  PCIe Link  ")
+
+    folder_var = make_folder_row(tab, "Log 資料夾")
+
+    btn_frame = tk.Frame(tab)
+    btn_frame.pack(fill="x", padx=12, pady=6)
+    status = tk.StringVar(value="")
+    tk.Label(btn_frame, textvariable=status, fg="gray").pack(side="left", padx=6)
+
+    out = make_output(tab)
+
+    def run(save=False):
+        folder = Path(folder_var.get())
+        if not folder.is_dir():
+            messagebox.showerror("錯誤", "請先選擇有效的資料夾")
+            return
+
+        def task():
+            status.set("掃描中...")
+            # 判斷是單台(含 Hs*.log)還是批次(子資料夾含 Hs*.log)
+            sub_folders = sorted(set(f.parent for f in folder.rglob("Hs*.log")))
+            if not sub_folders:
+                write_output(out, "未找到任何 Hs*.log 檔案。")
+                status.set("")
+                return
+
+            lines = []
+            save_dir = None
+            if save:
+                save_dir = Path(filedialog.askdirectory(title="選擇儲存資料夾"))
+                if not save_dir or not save_dir.is_dir():
+                    status.set("")
+                    return
+
+            for sf in sub_folders:
+                sn = sf.name
+                result = build_pcie_link_section(sf)
+                data_lines = result.splitlines()[3:] if result else ["(no PCIe link data)"]
+                lines.append(f"[{sn}]")
+                lines.extend(f"  {l}" for l in data_lines)
+                lines.append("")
+                if save and save_dir:
+                    (save_dir / f"{sn}.txt").write_text(
+                        "\n".join(data_lines) + "\n", encoding="utf-8"
+                    )
+
+            write_output(out, "\n".join(lines))
+            status.set(f"完成，共 {len(sub_folders)} 台" + (f"，已儲存至 {save_dir}" if save_dir else ""))
+
+        run_in_thread(task)
+
+    tk.Button(btn_frame, text="執行分析", command=lambda: run(False), width=12).pack(side="left")
+    tk.Button(btn_frame, text="執行並儲存", command=lambda: run(True), width=14).pack(side="left", padx=6)
+
+
+# ── Tab 5：Compress ───────────────────────────────────────────────────────────
 
 def build_compress_tab(nb: ttk.Notebook) -> None:
     tab = ttk.Frame(nb)
@@ -280,7 +349,10 @@ def build_full_output_tab(nb: ttk.Notebook) -> None:
     out = make_output(tab)
     _serial = [""]
 
-    def run():
+    _result_dir = Path.home() / "Desktop" / "parsing_result"
+    _result_dir.mkdir(parents=True, exist_ok=True)
+
+    def run(auto_save=False):
         folder = Path(folder_var.get())
         if not folder.is_dir():
             messagebox.showerror("錯誤", "請先選擇有效的 Log 資料夾")
@@ -301,16 +373,11 @@ def build_full_output_tab(nb: ttk.Notebook) -> None:
             parsed = parse(project, folder)
 
             status.set("分析 Event Flow 中...")
-            counter, samples, total_lines, total_segments = build_path_map(folder, _load_ignore(folder))
-            flow_text = (
-                format_flow(counter, total_lines, total_segments)
-                + "\n"
-                + format_flow_detail(counter, samples)
-            )
-            compressed_flow = "\n".join(process_lines(flow_text.splitlines(keepends=True)))
+            counter, samples, total_lines, total_segments = build_path_map(folder, _load_ignore(folder), project=project)
+            compressed_flow = build_compressed_flow(counter, samples, total_lines, total_segments, project=project)
 
             status.set("分析溫度中...")
-            temp = build_temperature_section(folder)
+            temp = build_temperature_section(folder, project=project)
 
             status.set("組合輸出...")
             sep = "=" * 80
@@ -329,27 +396,25 @@ def build_full_output_tab(nb: ttk.Notebook) -> None:
                 f"{'=' * 80}\n\n"
             )
             write_output(out, header + full_output)
+
             status.set("完成")
+
+            if auto_save:
+                fname = f"{_serial[0]}_parsing.txt" if _serial[0] else "full_output.txt"
+                path = filedialog.asksaveasfilename(
+                    defaultextension=".txt",
+                    filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")],
+                    initialfile=fname,
+                    initialdir=str(_result_dir),
+                )
+                if path:
+                    Path(path).write_text(header + full_output, encoding="utf-8")
+                    status.set(f"已儲存：{Path(path).name}")
 
         run_in_thread(task)
 
-    def save():
-        text = out.get("1.0", "end").strip()
-        if not text:
-            messagebox.showwarning("警告", "尚無內容可儲存")
-            return
-        default_name = f"{_serial[0]}_parsing.txt" if _serial[0] else "full_output.txt"
-        path = filedialog.asksaveasfilename(
-            defaultextension=".txt",
-            filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")],
-            initialfile=default_name,
-        )
-        if path:
-            Path(path).write_text(text, encoding="utf-8")
-            messagebox.showinfo("完成", f"已儲存到：{path}")
-
-    tk.Button(btn_frame, text="執行", command=run, width=12).pack(side="left")
-    tk.Button(btn_frame, text="儲存檔案", command=save, width=12).pack(side="left", padx=6)
+    tk.Button(btn_frame, text="執行", command=lambda: run(False), width=12).pack(side="left")
+    tk.Button(btn_frame, text="執行並儲存", command=lambda: run(True), width=14).pack(side="left", padx=6)
 
 
 # ── 主程式 ────────────────────────────────────────────────────────────────────
@@ -366,6 +431,7 @@ def main():
     build_parser_tab(nb)
     build_event_flow_tab(nb)
     build_temperature_tab(nb)
+    build_pcie_link_tab(nb)
     build_compress_tab(nb)
     build_full_output_tab(nb)
 

@@ -34,13 +34,13 @@ def main():
         ignore = {s.lower() for s in _settings.get("ignore_event_signatures", [])}
 
     print(f"[1] 讀取並分段 log（top_n={top_n}）...")
-    counter, samples, total_lines, total_segments = build_path_map(folder, ignore)
+    counter, samples, total_lines, total_segments = build_path_map(folder, ignore, project=project)
     print(f"    → 總行數：{total_lines}")
     print(f"    → 總 segment 數：{total_segments}")
     print(f"    → 不重複 path 數：{len(counter)}")
 
     print("\n" + format_flow(counter, total_lines, total_segments, top_n=top_n))
-    print(format_flow_detail(counter, samples, top_n=top_n))
+    print(format_flow_detail(counter, samples, top_n=top_n, project=project))
 
 
 if __name__ == "__main__":

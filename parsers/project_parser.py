@@ -2,7 +2,7 @@
 from pathlib import Path
 import re
 
-from .filter import load_settings, run_filter
+from .filter import load_settings, run_filter, resolve_log_folder
 from .simplifier import simplify_text
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,8 +14,8 @@ SEARCH_JSON_MAP = {
 
 _PJ_FW_RE = re.compile(r"LJ1\(SSSTC\)\s+FW\s+(FG[A-Za-z0-9]+)")
 _PJ_SN_RE = re.compile(r"\bSN:\s+([A-Za-z0-9]+)\b")
-_ER_FW_RE = re.compile(r"\b(F2N\d+)\s+FW\s+SubVersion:")
-_ER_SN_RE = re.compile(r"Device_SN:\s*\n\s*([A-Za-z0-9]+)\b", re.MULTILINE)
+_ER_FW_RE = re.compile(r"(F2[MN]\d+)\s+FW\s+SubVersion:")
+_ER_SN_RE = re.compile(r"\d?Device_SN:\s*\n\s*([A-Za-z0-9]+)", re.MULTILINE)
 _FOLDER_SN_RE = re.compile(r"SN([A-Za-z0-9]{12})", re.IGNORECASE)
 
 
@@ -24,7 +24,7 @@ def parse(project: str, log_folder: str | Path) -> str:
     if not search_json:
         raise ValueError(f"unsupported project: {project}")
     settings = load_settings(search_json)
-    raw_output = run_filter(settings, log_folder)
+    raw_output = run_filter(settings, log_folder, project=project)
     return simplify_text(raw_output)
 
 
@@ -44,14 +44,17 @@ def detect_project_from_raw_logs(log_folder: str | Path) -> str:
 def extract_metadata_from_raw_logs(
     log_folder: str | Path, folder_name: str = ""
 ) -> dict:
-    log_folder = Path(log_folder)
+    log_folder = resolve_log_folder(Path(log_folder))
     project = ""
     fw_version = ""
 
     m = _FOLDER_SN_RE.search(folder_name or "")
     serial = f"SN{m.group(1)}".upper() if m else ""
 
-    for p in log_folder.rglob("*.log"):
+    log_files = list(log_folder.glob("Hs*.log"))
+    log_files += [f for f in log_folder.glob("*.log") if f.name not in {l.name for l in log_files}]
+
+    for p in log_files:
         try:
             text = p.read_text(errors="ignore")
 

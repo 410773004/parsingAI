@@ -1,11 +1,11 @@
 {
-  "drop_prefix_only": [
-    "epm_update()",
-    "epm_header_update()",
-    "pcie_phy_leq_dfe()"
-  ],
   "drop_entire_line": [
     "getsensortemp()",
     "timestamp"
+  ],
+  "strip_func_prefix": [
+    "epm_update()",
+    "epm_header_update()",
+    "pcie_phy_leq_dfe()"
   ]
 }

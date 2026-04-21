@@ -1,15 +1,24 @@
 {
-  "path_file_dir": "",
-  "file_name": [],
+  "context_lines": 30,
 
-  "ignore_event_signatures": [],
+  "ignore_event_signatures": [
+    "Drive Idle over 3min.",
+    "Drive Idle over 30s.",
+    "Drive Idle over 10min.",
+    "Drive Idle over 5min.",
+    "Manually",
+    "Host Set security User password to lock device",
+    "AES disabled by Host",
+    "TCG disabled by Host",
+    "SATA Link Lost"
+  ],
 
   "keywords": [
     {
       "type": "error",
       "enabled": true,
       "keyword": "Trigger Savelog",
-      "lines_to_capture": 20
+      "lines_to_capture": 30
     }
   ]
 }

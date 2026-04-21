@@ -5,7 +5,8 @@
     "pcie link error",
     "plp handle finished",
     "Telemetry update",
-    "nvme save log"
+    "nvme save log",
+    "command timeout"
   ],
 
   "keywords": [

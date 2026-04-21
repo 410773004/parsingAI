@@ -26,6 +26,11 @@ TEMP_HIGH_THRESHOLD = 85
 TEMP_OUTLIER_LIMIT = 10
 
 # ===== event flow =====
-FLOW_DETAIL_PRE_LINES = 200
+FLOW_DETAIL_PRE_LINES = 150     # primary: lines before first event
+FLOW_DETAIL_POST_LINES = 10     # primary: lines after last event
+FLOW_TOTAL_TOKEN_THRESHOLD = 15000  # fallback trigger on total output
+FLOW_DETAIL_PRE_CONTEXT = 80    # fallback lv1: lines before each event
+FLOW_DETAIL_POST_CONTEXT = 20   # fallback lv1: lines after each event
+FLOW_LV2_TOP_N_STEPS = [5, 3, 1]  # fallback lv2: try reducing top_n
 EVENT_FLOW_TOP_N = 20
 EVENTS_PER_LINE = 5

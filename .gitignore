@@ -2,3 +2,8 @@
 *.db-shm
 *.db-wal
 data/
+__pycache__/
+*.pyc
+*.pyo
+output_debug.txt
+tools/SN*.txt

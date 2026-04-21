@@ -1,8 +1,6 @@
 import re
 import json
 from pathlib import Path
-import tkinter as tk
-from tkinter import filedialog, messagebox
 
 try:
     import tiktoken
@@ -47,12 +45,14 @@ def apply_function_rules(line: str) -> str | None:
         if s_lower.startswith(key):
             return None
 
-    # 2. 刪前綴後面的內容，只保留前綴名
-    for f in RULES.get("drop_prefix_only", []):
+    # 2. 去函式名、保留內容（funcname() - content → content）
+    for f in RULES.get("strip_func_prefix", []):
         key = f.strip().lower()
         if s_lower.startswith(key):
-            # 保留 JSON 裡定義的名字，順便把 () 去掉
-            return f.replace("()", "")
+            dash_pos = s.find(" - ")
+            if dash_pos != -1:
+                return s[dash_pos + 3:].strip()
+            return s
 
     return s
 
@@ -368,6 +368,8 @@ def process_file():
 
 
 def main():
+    import tkinter as tk
+    from tkinter import filedialog, messagebox
     root = tk.Tk()
     root.title("Log 壓縮工具")
     root.geometry("340x180")

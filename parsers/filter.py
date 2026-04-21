@@ -16,6 +16,9 @@ PGR_RE = re.compile(r"PGR Ver\s*:\s*(\S+)")
 LDR_RE = re.compile(r"Loader Ver\s*:\s*(\S+)")
 NAND_RE = re.compile(r"(\d+CH\*\d+CE\*\d+LUN\*\d+PL)")
 
+ER_FW_RE = re.compile(r"(F2[MN]\d+)\s+FW\s+SubVersion:")
+ER_MODEL_RE = re.compile(r"(SSSTC\s+\S+)")
+
 
 def remove_timestamp(lines):
     out = []
@@ -53,34 +56,42 @@ def compress_repeated(lines):
     return out
 
 
-def parse_device_info(lines):
+def parse_device_info(lines, project="PJ1"):
     fw = None
     pgr = None
     ldr = None
     nand = None
+    model = None
 
     for line in lines:
-        if fw is None:
-            m = FW_RE.search(line)
-            if m:
-                fw = m.group(1)
+        if project == "ER3":
+            if fw is None:
+                m = ER_FW_RE.search(line)
+                if m:
+                    fw = m.group(1)
+            if model is None:
+                m = ER_MODEL_RE.search(line)
+                if m:
+                    model = m.group(1)
+        else:
+            if fw is None:
+                m = FW_RE.search(line)
+                if m:
+                    fw = m.group(1)
+            if pgr is None:
+                m = PGR_RE.search(line)
+                if m:
+                    pgr = m.group(1)
+            if ldr is None:
+                m = LDR_RE.search(line)
+                if m:
+                    ldr = m.group(1)
+            if nand is None:
+                m = NAND_RE.search(line)
+                if m:
+                    nand = m.group(1)
 
-        if pgr is None:
-            m = PGR_RE.search(line)
-            if m:
-                pgr = m.group(1)
-
-        if ldr is None:
-            m = LDR_RE.search(line)
-            if m:
-                ldr = m.group(1)
-
-        if nand is None:
-            m = NAND_RE.search(line)
-            if m:
-                nand = m.group(1)
-
-    return fw, pgr, ldr, nand
+    return fw, pgr, ldr, nand, model
 
 
 def extract_event_blocks(lines, keyword, context):
@@ -96,27 +107,45 @@ def extract_event_blocks(lines, keyword, context):
     return blocks
 
 
-def get_event_signature(block):
+_ER3_SIG_RE = re.compile(r"\[SL\]\s+(.*?)\s+->\s+Trigger Savelog", re.IGNORECASE)
+_ER3_NRLG_RE = re.compile(r"\[NRLG\].*trigger savelog", re.IGNORECASE)
+
+
+def get_event_signature(block, project="PJ1"):
     for line in reversed(block):
         s = line.strip()
         lower = s.lower()
 
-        if "[evt by cpu" in lower:
-            pos = s.find("]")
-            if pos != -1:
-                return s[pos + 1:].strip()
-            return s.strip()
+        if project == "ER3":
+            # Skip NRLG entries (log record markers, not real error events)
+            if _ER3_NRLG_RE.search(s):
+                continue
+            m = _ER3_SIG_RE.search(s)
+            if m:
+                return m.group(1).strip()
+        else:
+            if "[evt by cpu" in lower:
+                pos = s.find("]")
+                if pos != -1:
+                    return s[pos + 1:].strip()
+                return s.strip()
 
     return block[-1].strip() if block else "unknown event"
 
 
-def cluster_event_blocks(blocks, ignore_sigs: set[str]):
+def cluster_event_blocks(blocks, ignore_sigs: set[str], project="PJ1"):
     clusters = {}
 
     for block in blocks:
-        sig = get_event_signature(block)
+        sig = get_event_signature(block, project)
 
+        # Skip empty/unknown signatures and NRLG records
+        if not sig or sig == "unknown event":
+            continue
         if sig.strip().lower() in ignore_sigs:
+            continue
+        # For ER3: skip if signature still contains [SL] or [NRLG] (unmatched)
+        if project == "ER3" and (sig.startswith("[SL]") or sig.startswith("[NRLG]")):
             continue
 
         if sig not in clusters:
@@ -130,16 +159,39 @@ def cluster_event_blocks(blocks, ignore_sigs: set[str]):
     return clusters
 
 
+def resolve_log_folder(folder: Path) -> Path:
+    """Return the effective log folder that directly contains Hs*.log files.
+
+    If *folder* itself has no Hs*.log, walk subdirectories (rglob) and return
+    the parent of the first Hs*.log found.  Falls back to *folder* unchanged
+    so callers can still return their own 'no log found' message.
+    """
+    if list(folder.glob("Hs*.log")):
+        return folder
+    for hit in sorted(folder.rglob("Hs*.log")):
+        return hit.parent
+    return folder
+
+
 def load_smart(folder):
-    p = Path(folder) / "smart_info.txt"
-    if not p.exists():
-        return ""
-    return p.read_text(encoding="utf-8", errors="ignore").strip()
+    for name in ("smart_info.txt", "SMARTInfo.txt"):
+        p = Path(folder) / name
+        if p.exists():
+            return p.read_text(encoding="utf-8", errors="ignore").strip()
+    return ""
 
 
-def run_filter(settings, log_folder):
-    log_folder = Path(log_folder)
-    log_files = sorted(log_folder.glob("*.log"))
+def run_filter(settings, log_folder, project="PJ1"):
+    log_folder = resolve_log_folder(Path(log_folder))
+
+    if project == "ER3":
+        log_files = sorted(
+            list(log_folder.glob("Hs*.log"))
+            + list(log_folder.glob("logNorEx.log"))
+            + list(log_folder.glob("logNor.log"))
+        )
+    else:
+        log_files = sorted(log_folder.glob("*.log"))
 
     if not log_files:
         return "No log file found."
@@ -150,7 +202,7 @@ def run_filter(settings, log_folder):
 
     all_lines = remove_timestamp(all_lines)
 
-    fw, pgr, ldr, nand = parse_device_info(all_lines)
+    fw, pgr, ldr, nand, model = parse_device_info(all_lines, project)
 
     keywords = settings.get("keywords", [])
     global_context = int(settings.get("context_lines", 20) or 20)
@@ -175,7 +227,7 @@ def run_filter(settings, log_folder):
         block = compress_repeated(block)
         processed_blocks.append(block)
 
-    clusters = cluster_event_blocks(processed_blocks, ignore_sigs)
+    clusters = cluster_event_blocks(processed_blocks, ignore_sigs, project)
     sorted_clusters = sorted(
         clusters.items(),
         key=lambda x: x[1]["count"],
@@ -191,6 +243,8 @@ def run_filter(settings, log_folder):
     out.append(sep)
     out.append("DEVICE INFO")
     out.append(sep)
+    if model:
+        out.append(f"Model            : {model}")
     if fw:
         out.append(f"Firmware Version : {fw}")
     if pgr:
